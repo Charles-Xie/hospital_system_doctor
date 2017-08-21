@@ -4,7 +4,8 @@ var dashboard = function () {
         $sidebarContainer = $container.find('.sidebar-content-container');
         $navContainer = $container.find('.navbar-content-container');
     };
-
+    
+    // add one row to a table
     var addTableRow = function(tableId, cols) {
         var $table = $(tableId);
         var $body =  $table.find('tbody');

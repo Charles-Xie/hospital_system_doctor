@@ -80,7 +80,7 @@
                   <h2>当前挂号列表</h2>
                   <p>共有 3 位病人</p>
                 </div>
-                <table class="table table-bordered table-hover">
+                <table class="table table-bordered table-hover reg-patient-table">
                   <thead>
                     <tr>
                       <th>#</th>
@@ -945,10 +945,20 @@
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="javascripts/lib/tether.min.js"></script>
     <script src="https://cdn.bootcss.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"></script>
     <!-- <script src="http://code.gijgo.com/1.4.0/js/gijgo.js" type="text/javascript"></script> -->
     <!-- <link href="http://code.gijgo.com/1.4.0/css/gijgo.css" rel="stylesheet" type="text/css" /> -->
     <!-- <script src="response2.js"></script> -->
+    <script src="javascripts/doctor/doctor.js"></script>
+    <script src="javascripts/dashboard.shell.js"></script>
+    <script>
+      $(document).ready(
+        function() {
+          doctor.init($('body'));
+        }
+      );
+    </script>
 </body>
 
 </html>
