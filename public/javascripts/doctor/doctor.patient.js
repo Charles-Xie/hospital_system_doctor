@@ -3,11 +3,16 @@ doctor.patient = (function() {
 
     // init the patient template
     var init = function(container) {
+        console.log("doctor.patient init");
         $container = container;
         $patientItem = $container.find('#patient-list-start');
 
         var countItemNum = 0;
         var $patientPage = $container.find('#patient1');
+
+        // remove existing patient page
+        $patientPage.nextAll().remove();
+
         while($patientItem.next().length != 0) {
             $patientItem = $patientItem.next('li.patient-item');
             countItemNum += 1;
@@ -23,6 +28,12 @@ doctor.patient = (function() {
         }
     };
 
+    var sendPatientInfoRequest = function() {
+
+    };
+    
+    // add event listener to patient items
+    // so that when clicked they get and show info
     var addPatientListener = function() {
 
     };
