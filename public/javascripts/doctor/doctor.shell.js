@@ -6,7 +6,7 @@ doctor.shell = (function() {
         console.log("doctor shell init");
 
         // send request and add register table items
-        // addPatientList([{name: "1. 李白"}, {name: "2. 杜甫"}, {name: "3. 王维"}]);
+        addPatientList([{name: "李白"}, {name: "杜甫"}, {name: "王维"}]);
     };
 
     var addRegTable = function(arr) {
@@ -21,8 +21,19 @@ doctor.shell = (function() {
             //     patient.time,
             // ];
             var oneRow = [arr.count];
-            oneRow.concat(patient.name, patient.email, patient.time);
-            // need to add a col 'option'
+            var optChoose = $('<button>')
+                .addClass('btn')
+                .addClass('btn-outline-primary')
+                .addClass('btn-outline-sm')
+                .text("选择");
+            var optFinish = $('<button>')
+                .addClass('btn')
+                .addClass('btn-outline-secondary')
+                .addClass('btn-sm')
+                .text("完成");
+            var optNode = $('<div>').append(optChoose).append(optFinish);
+            oneRow.concat(patient.id, patient.name, patient.time, optNode);
+            // need to add a col 'option', add node directly
             dashboard.addTableRow('#reg-patient-table',line);
         });
     };
