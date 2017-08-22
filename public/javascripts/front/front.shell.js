@@ -40,12 +40,12 @@ front.shell = (function () {
                 patient.test
             ];
             dashboard.addTableRow('#regTable',line);
-        })
-    }
+        });
+    };
 
     return{
         init : init ,
         regTableRefresh : regTableRefresh ,
         addRegList : addRegList
-    }
+    };
 })();
