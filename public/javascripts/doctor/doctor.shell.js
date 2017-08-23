@@ -6,7 +6,7 @@ doctor.shell = (function() {
         console.log("doctor shell init");
 
         // send request and add register table items
-        addPatientList([{name: "李白"}, {name: "杜甫"}, {name: "王维"}]);
+        addPatientList([{name: "李白", id: 1534662}, {name: "杜甫", id: 2352645}, {name: "王维", id: 3221497}]);
     };
 
     var addRegTable = function(arr) {
@@ -53,7 +53,8 @@ doctor.shell = (function() {
                         $('<a>',{
                             "class": "nav-link",
                             "data-toggle": "pill",
-                            "href": "#"
+                            "href": "#",
+                            "data-id": patient.id        // custom attribute set by myself
                         }).text(patient.name)
                     )
             );
