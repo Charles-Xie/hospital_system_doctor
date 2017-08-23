@@ -206,8 +206,8 @@
 										<li class="nav-item dropdown">
 											<a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">电子病历</a>
 											<div class="dropdown-menu">
-												<a class="dropdown-item" href="#record-cover-page" data-toggle="tab">病历首页</a>
-												<a class="dropdown-item" href="#record-history-page" data-toggle="tab">病历记录</a>
+												<a class="dropdown-item" href="#record-cover-page" data-toggle="tab">病历信息</a>
+												<!-- <a class="dropdown-item" href="#record-history-page" data-toggle="tab">病历记录</a> -->
 												<a class="dropdown-item" href="#record-report-page" data-toggle="tab">检验报告</a>
 											</div>
 										</li>
@@ -233,21 +233,21 @@
 														<tbody>
 															<tr>
 																<th>姓名</th>
-																<td></td>
+																<td data-tag="name"></td>
 																<th>身份证号</th>
-																<td></td>
+																<td data-tag="cardID"></td>
 															</tr>
 															<tr>
 																<th>性别</th>
-																<td></td>
+																<td data-tag="gen"></td>
 																<th>出生日期</th>
-																<td></td>
+																<td data-tag="date"></td>
 															</tr>
 															<tr>
-																<th>婚否</th>
-																<td></td>
+																<th>年龄</th>
+																<td data-tag="marriage"></td>
 																<th>联系电话</th>
-																<td></td>
+																<td data-tag="tel"></td>
 															</tr>
 														</tbody>
 													</table>
@@ -262,19 +262,10 @@
 														</thead>
 														<tbody>
 															<tr>
-																<td></td>
-																<td></td>
-																<td></td>
-															</tr>
-															<tr>
-																<td></td>
-																<td></td>
-																<td></td>
-															</tr>
-															<tr>
-																<td></td>
-																<td></td>
-																<td></td>
+																<td data-tag="DAH"></td>
+																<td data-tag="IDR"></td>
+																<td data-tag="CR"></td>
+																<!-- to be continued -->
 															</tr>
 														</tbody>
 													</table>
@@ -283,15 +274,15 @@
 														<tbody>
 															<tr>
 																<th>医院地址</th>
-																<td>XX市XX路XX号</td>
+																<td data-tag="address">XX市XX路XX号</td>
 																<th>医院网址</th>
-																<td>www.xxx.com</td>
+																<td data-tag="net">www.xxx.com</td>
 															</tr>
 															<tr>
 																<th></th>
 																<td></td>
 																<th>预检台电话</th>
-																<td>1234567</td>
+																<td data-tag="FT">1234567</td>
 															</tr>
 														</tbody>
 													</table>
@@ -305,16 +296,8 @@
 														</thead>
 														<tbody>
 															<tr>
-																<td></td>
-																<td></td>
-															</tr>
-															<tr>
-																<td></td>
-																<td></td>
-															</tr>
-															<tr>
-																<td></td>
-																<td></td>
+																<td data-tag="state"></td>
+																<td data-tag="info"></td>
 															</tr>
 														</tbody>
 													</table>
@@ -323,11 +306,10 @@
 											</div>
 										</div>
 
-										<div class="tab-pane fade" id="record-history-page">
+										<!-- <div class="tab-pane fade" id="record-history-page">
 											<div class="row">
 												<div class="col-lg-2"></div>
 												<div class="col-lg-8 record-content">
-													<!-- disease diagnoses history -->
 													<table class="table table-hover table-bordered record-history-table">
 														<thead class="thead-default">
 															<tr>
@@ -340,19 +322,11 @@
 																<td></td>
 																<td></td>
 															</tr>
-															<tr>
-																<td></td>
-																<td></td>
-															</tr>
-															<tr>
-																<td></td>
-																<td></td>
-															</tr>
 														</tbody>
 													</table>
 												</div>
 											</div>
-										</div>
+										</div> -->
 										<div class="tab-pane fade" id="record-report-page">
 											<!-- shows the report in the medical record -->
 											this is a page
@@ -360,7 +334,7 @@
 										<div class="tab-pane fade show active" id="treatment-schedule-page">
 											<!-- 治疗方案 -->
 											<div class="row">
-												<div class="col-lg-10">
+												<div class="col-lg-12">
 													<h4>病情诊断</h4>
 													<table class="table table-hover table-bordered disease-diagnose-table">
 														<!-- this table is editable -->
@@ -372,15 +346,17 @@
 														</tr>
 														<tr>
 															<th>病史</th>
-															<td contenteditable="false" data-tag="history"></td>
-															<th>发病日期</th>
-															<td contenteditable="true">2017-7-8</td>
+															<td colspan="3" contenteditable="true" data-tag="history"></td>
+															<!-- <th>发病日期</th> -->
+															<!-- <td contenteditable="true">2017-7-8</td> -->
 														</tr>
 														<tr>
 															<th>体征</th>
-															<td contenteditable="true"></td>
+															<td colspan="3" contenteditable="true"></td>
+														</tr>
+														<tr>
 															<th>处理意见</th>
-															<td contenteditable="true"></td>
+															<td colspan="3" contenteditable="true"></td>
 														</tr>
 													</table>
 												</div>
@@ -481,7 +457,7 @@
 												<!-- table here of current check item of this patient当前的检查项目 -->
 												<div class="col-lg-12 col-md-12">
 													<h4>当前检查项目</h4>
-													<table class="table table-bordered table-condensed check-item-table">
+													<table class="table table-bordered table-condensed current-check-table">
 														<thead>
 															<tr>
 																<th>编号</th>

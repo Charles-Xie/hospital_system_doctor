@@ -112,33 +112,87 @@ doctor.patient = (function() {
     //             $tds.eq(count).append(tdsVal[count]);
     //         }
     //     }
+    // count += 1;
     // }; 
 
 // _________________________________________________ version 1 end
 
 // _________________________________________________ version 2 start
     var showPatientInfo = function(page, pageInfo/* page is jQuery obj and pageInfo JSON obj */) {
+        var basicInfo = pageInfo.basicInfo;
+        addTableItems(page, 'table.patient-info-table', basicInfo);
 
+        var diseaseDiag = pageInfo.diseaseDiag;
+        addTableItems(page, 'table.disease-diagnose-table', diseaseDiag, '[contenteditable="false"]');
+
+        var treatSche = pageInfo.treatSche;
+        addMultiRows(page, 'table.treatment-schedule-table', treatSche, '[data-tag]');
+
+        var recordCover = pageInfo.recordCover;
+        addTableItems(page, 'table.record-cover-table', recordCover, '[data-tag]');
+
+        var currentCheck = pageInfo.currentCheck;
+        addMultiRows(page, 'table.current-check-table', currentCheck, '[data-tag]');
     };
-
+ 
+    // add info to items in table
     var addTableItems = function(page, tableSelector, tableInfo, condition/* tableInfo is JSON obj */) {
+        if(typeof tableInfo)
         var $table = page.find(tableSelector);
         var $tds = (typeof condition == 'string')? $table.find('td').filter(condition): $table.find('td');
         var count = 0;
         while(count < $tds.length) {
-            var itemName = $tds.eq(count).data('tag')
-            if(typeof tableInfo(itemName) == 'string') {
-                $tds.eq(count).text(tableInfo(itemName));
+            var itemName = $tds.eq(count).data('tag');
+            // if no data-tag attribute, typeof itemName == undefined
+            if(typeof itemName != 'undefined') {
+                if(typeof tableInfo(itemName) == 'string') {
+                    $tds.eq(count).text(tableInfo(itemName));
+                }
+                else if(typeof tableInfo(itemName) == 'undefined') {
+                    console.log("Haven't got info item" + tableSelector + " " + itemName);
+                }
+                else {
+                    $tds.eq(count).append(tableInfo(itemName));
+                }
             }
-            else if(typeof tableInfo(itemName) == 'undefined') {
-                console.log("Haven't got info item" + tableSelector + " " + itemName);
-            }
-            else {
-                $tds.eq(count).append(tableInfo(itemName));
-            }
+            count += 1;
         }
     };
-// _________________________________________________version 2 end
+
+    // add several rows of same format to a table
+    var addMultiRows = function(page, tableSelector, tableInfo, condition/* tableInfo JSON object array */) {
+        if(tableInfo.length == 0)
+            console.log("No items found");
+            return;
+        var $table = page.find(tableSelector);
+        var $row = $table.find(tr).first().clone();     // as row template
+        var $tbody = $table.find('tbody');
+        $tbody.empty();
+
+        var addRowItems = function(tds, rowInfo) {
+            var count = 0;
+            var itemName;
+            while(count < tds.length) {
+                itemName = tds.eq(count).data('tag');
+                if(typeof itemName!= 'undefined') {
+                    if(typeof rowInfo(itemName) == 'string') {
+                        tds.eq(count).text(rowInfo(itemName));
+                    }
+                    else if(typeof itemName != 'undefined') {
+                        tds.eq(count).append(rowInfo(itemName));
+                    }
+                }
+                count += 1;
+            }
+        };
+
+        tableInfo.forEach(function(rowInfo, index) {
+            var newRow = $row.clone();
+            addRowItems(((typeof condition == 'string')? newRow.find('td').filter(condition): newRow.find('td')), rowInfo);
+            $tbody.append(newRow);
+        });
+    };
+// _________________________________________________ version 2 end
 
     // add event listener to patient items
     // so that when clicked they get and show info
