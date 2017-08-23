@@ -59,38 +59,86 @@ doctor.patient = (function() {
 
     };
 
+// _________________________________________________ version 1 start
     // patient: patient info
-    var showPatientInfo = function(page, patient) {
-        var $page = page;
+    // var showPatientInfo = function(page, patient) {
+    //     var $page = page;
+    //     var $table, tdsVal;
 
-        // basic info table
-        var $tds = $page.find('table.patient-info-table').find('td');
-        $tds.forEach(function(td, index) {
-            td.text(patient[index]);
-        });
+    //     // basic info table
+    //     // var $tds = $page.find('table.patient-info-table').find('td');
+    //     // $tds.forEach(function(td, index) {
+    //     //     td.text(patient[index]);
+    //     // });
+    //     var basicInfo;
+    //     $table = $page.find('table.patient-info-table');
+    //     tdsVal = [basicInfo.name, basicInfo.age, basicInfo.gen, basicInfo.fee, basicInfo.ub, basicInfo.rb];
+    //     addTableItems($table, tdsVal);
 
-        // disease-diagnose-table
-        
-        // treatment-schedule-table
+    //     // disease-diagnose-table
+    //     var diseaseDiag;
+    //     $table = $page.find('table.disease-diagnose-table');
+    //     tdsVal = [diseaseDiag.date, diseaseDiag.doctor, diseaseDiag.history];
+    //     addTableItems($table, tdsVal, "[contenteditable='false']");
 
-        // record-cover-table
+    //     // treatment-schedule-table
+    //     // wait
 
-        // record-history-table
+    //     // record-cover-table
+    //     var 
+    //     // record-history-table
 
-        // check-item-table
+    //     // check-item-table
 
-        // check-option-table
+    //     // check-option-table
 
-        // search-result-table
+    //     // search-result-table
 
-        // chosen-medicine-table
-    };
+    //     // chosen-medicine-table
+    // };
     
-    // add array items to a table
-    var addTableItems = function(table, tdsVal) {
-        var $tds = table.find('td');
+    // // add array items to a table
+    // var addTableItems = function(table, tdsVal, condition) {
+    //     var $tds = table.find('td');
+    //     if(typeof condition == 'string') {
+    //         $tds = $tds.filter(condition);
+    //     }
+    //     var count = 0;
+    //     while(count < tdsVal.length && count < $tds.length) {
+    //         if(typeof tdsVal[count] == 'string' || typeof tdsVal[count] == 'number') {
+    //             $tds.eq(count).text(tdsVal[count]);
+    //         }
+    //         else {
+    //             $tds.eq(count).append(tdsVal[count]);
+    //         }
+    //     }
+    // }; 
+
+// _________________________________________________ version 1 end
+
+// _________________________________________________ version 2 start
+    var showPatientInfo = function(page, pageInfo/* page is jQuery obj and pageInfo JSON obj */) {
 
     };
+
+    var addTableItems = function(page, tableSelector, tableInfo, condition/* tableInfo is JSON obj */) {
+        var $table = page.find(tableSelector);
+        var $tds = (typeof condition == 'string')? $table.find('td').filter(condition): $table.find('td');
+        var count = 0;
+        while(count < $tds.length) {
+            var itemName = $tds.eq(count).data('tag')
+            if(typeof tableInfo(itemName) == 'string') {
+                $tds.eq(count).text(tableInfo(itemName));
+            }
+            else if(typeof tableInfo(itemName) == 'undefined') {
+                console.log("Haven't got info item" + tableSelector + " " + itemName);
+            }
+            else {
+                $tds.eq(count).append(tableInfo(itemName));
+            }
+        }
+    };
+// _________________________________________________version 2 end
 
     // add event listener to patient items
     // so that when clicked they get and show info

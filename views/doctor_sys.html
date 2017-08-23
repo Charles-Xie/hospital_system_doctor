@@ -366,19 +366,19 @@
 														<!-- this table is editable -->
 														<tr>
 															<th>诊断日期</th>
-															<td contenteditable="false">2017-7-8</td>
+															<td contenteditable="false" data-tag="date">2017-7-8</td>
 															<th>医生</th>
-															<td contenteditable="false">王尼玛</td>
+															<td contenteditable="false" data-tag="doctor">王尼玛</td>
 														</tr>
 														<tr>
-															<th>体征</th>
-															<td contenteditable="false"></td>
+															<th>病史</th>
+															<td contenteditable="false" data-tag="history"></td>
 															<th>发病日期</th>
 															<td contenteditable="true">2017-7-8</td>
 														</tr>
 														<tr>
-															<th>病史</th>
-															<td contenteditable="false"></td>
+															<th>体征</th>
+															<td contenteditable="true"></td>
 															<th>处理意见</th>
 															<td contenteditable="true"></td>
 														</tr>
@@ -493,10 +493,11 @@
 														</thead>
 														<tbody>
 															<tr>
-																<td></td>
-																<td></td>
-																<td></td>
-																<td></td>
+																<td data-tag="id"></td>
+																<td data-tag="name"></td>
+																<td data-tag="expense"></td>
+																<td data-tag="state"></td>
+																<!-- <td></td> -->
 																<td>
 																	<button type="button" class="btn btn-sm btn-outline-primary">点击查看报告</button>
 																</td>
@@ -536,11 +537,11 @@
 													<table class="table table-bordered check-option-table">
 														<thead>
 															<tr>
-																<td>名称</td>
-																<td>时间</td>
-																<td>地点</td>
-																<td>费用</td>
-																<td>备注</td>
+																<td data-tag="name">名称</td>
+																<td data-tag="time">时间</td>
+																<td data-tag="location">地点</td>
+																<td data-tag="expense">费用</td>
+																<td data-tag="more">备注</td>
 															</tr>
 														</thead>
 														<tbody>
