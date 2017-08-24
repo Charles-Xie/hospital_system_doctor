@@ -1,3 +1,4 @@
+// initialize the patient page
 doctor.patient = (function() {
     var $container;
 
@@ -9,32 +10,23 @@ doctor.patient = (function() {
         var $patientItem = $container.find('#patient-list-start');
 
         var countItemNum = 0;
-        var $patientPage = $container.find('#patient1');
+        var $patientPage = $container.find('#patient-1');
 
         // remove existing patient page
         $patientPage.nextAll().remove();
 
         // function used to make ids in pages not repeated
-        var makeUnique = function(node, seq) {
-            console.log("makeUnique() called");
-            node.find('[id]').attr('id', function(index, id) {
-                return id + seq;
-            });
-            node.find("[href$='-page']").attr('href', function(index, href) {
-                // console.log(href);
-                return href + seq;
-            });
-        };
+        
 
         while($patientItem.next().length != 0) {
             $patientItem = $patientItem.next('li.patient-item');
             countItemNum += 1;
-            $patientItem.children('a.nav-link').first().attr('href', '#patient' + countItemNum);
+            $patientItem.children('a.nav-link').first().attr('href', '#patient-' + countItemNum);
             // make the patient LIST item point to that patient page
 
             //initialize the patient PAGE
             if(countItemNum != 1) {
-                var newPatientPage = $patientPage.clone().attr('id', 'patient' + countItemNum);
+                var newPatientPage = $patientPage.clone().attr('id', 'patient-' + countItemNum);
                 makeUnique(newPatientPage, countItemNum);
                 // newPatientPage.find('[id]').attr('id', function(index, id) {
                 //     return id + countItemNum;
@@ -47,12 +39,27 @@ doctor.patient = (function() {
             }
         }
 
-        makeUnique($('#patient1'), 1);
+        makeUnique($('#patient-1'), 1);
         // $('#patient1').find('[id]').attr('id', function(index, id) {
         //     return id + 1;
         // });
 
         
+    };
+
+    var makeUnique = function(node, seq) {
+        console.log("makeUnique() called");
+        node.find('[id]').attr('id', function(index, id) {
+            return id + seq;
+        });
+        node.find("[href$='-page']").attr('href', function(index, href) {
+            // console.log(href);
+            return href + seq;
+        });
+    };
+
+    var addPatientTemplate = function() {
+
     };
 
     var sendPatientInfoRequest = function(patient_id) {
@@ -126,13 +133,13 @@ doctor.patient = (function() {
         addTableItems(page, 'table.disease-diagnose-table', diseaseDiag, '[contenteditable="false"]');
 
         var treatSche = pageInfo.treatSche;
-        addMultiRows(page, 'table.treatment-schedule-table', treatSche, '[data-tag]');
+        doctor.shell.addMultiRows(page, 'table.treatment-schedule-table', treatSche, '[data-tag]');
 
         var recordCover = pageInfo.recordCover;
         addTableItems(page, 'table.record-cover-table', recordCover, '[data-tag]');
 
         var currentCheck = pageInfo.currentCheck;
-        addMultiRows(page, 'table.current-check-table', currentCheck, '[data-tag]');
+        doctor.shell.addMultiRows(page, 'table.current-check-table', currentCheck, '[data-tag]');
     };
  
     // add info to items in table
@@ -159,39 +166,7 @@ doctor.patient = (function() {
         }
     };
 
-    // add several rows of same format to a table
-    var addMultiRows = function(page, tableSelector, tableInfo, condition/* tableInfo JSON object array */) {
-        if(tableInfo.length == 0)
-            console.log("No items found");
-            return;
-        var $table = page.find(tableSelector);
-        var $row = $table.find(tr).first().clone();     // as row template
-        var $tbody = $table.find('tbody');
-        $tbody.empty();
-
-        var addRowItems = function(tds, rowInfo) {
-            var count = 0;
-            var itemName;
-            while(count < tds.length) {
-                itemName = tds.eq(count).data('tag');
-                if(typeof itemName!= 'undefined') {
-                    if(typeof rowInfo(itemName) == 'string') {
-                        tds.eq(count).text(rowInfo(itemName));
-                    }
-                    else if(typeof itemName != 'undefined') {
-                        tds.eq(count).append(rowInfo(itemName));
-                    }
-                }
-                count += 1;
-            }
-        };
-
-        tableInfo.forEach(function(rowInfo, index) {
-            var newRow = $row.clone();
-            addRowItems(((typeof condition == 'string')? newRow.find('td').filter(condition): newRow.find('td')), rowInfo);
-            $tbody.append(newRow);
-        });
-    };
+    
 // _________________________________________________ version 2 end
 
     // add event listener to patient items
@@ -214,6 +189,8 @@ doctor.patient = (function() {
     };
 
     return {
-        init: init
+        init: init,
+        addPatient: addPatientTemplate,
+        makePageUnique: makeUnique
     };
 })();

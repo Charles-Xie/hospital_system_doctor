@@ -6,6 +6,7 @@ var doctor = (function() {
         dashboard.init($container);
         doctor.shell.init($container);
         doctor.patient.init($container);
+        doctor.dynamic.init($container);
     };
 
     return {
