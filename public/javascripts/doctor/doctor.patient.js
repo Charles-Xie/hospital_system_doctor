@@ -1,6 +1,7 @@
 // initialize the patient page
 doctor.patient = (function() {
     var $container;
+    var $patientPage;   // template
 
     // init the patient template
     var init = function(container) {
@@ -10,7 +11,7 @@ doctor.patient = (function() {
         var $patientItem = $container.find('#patient-list-start');
 
         var countItemNum = 0;
-        var $patientPage = $container.find('#patient-1');
+        $patientPage = $container.find('#patient-');
 
         // remove existing patient page
         $patientPage.nextAll().remove();
@@ -25,26 +26,13 @@ doctor.patient = (function() {
             // make the patient LIST item point to that patient page
 
             //initialize the patient PAGE
-            if(countItemNum != 1) {
-                var newPatientPage = $patientPage.clone().attr('id', 'patient-' + countItemNum);
-                makeUnique(newPatientPage, countItemNum);
-                // newPatientPage.find('[id]').attr('id', function(index, id) {
-                //     return id + countItemNum;
-                //     // need to make every id unique
-                // });
-                // newPatientPage.find("[id$='-page']").attr('href', function() {
-                //     return href + countItemNum;
-                // });
-                $patientPage.parent().append(newPatientPage);
-            }
+            var newPatientPage = $patientPage.clone().attr('id', 'patient-' + countItemNum);
+            makeUnique(newPatientPage, countItemNum);
+            $patientPage.parent().append(newPatientPage);
         }
-
-        makeUnique($('#patient-1'), 1);
         // $('#patient1').find('[id]').attr('id', function(index, id) {
         //     return id + 1;
         // });
-
-        
     };
 
     var makeUnique = function(node, seq) {
@@ -58,8 +46,14 @@ doctor.patient = (function() {
         });
     };
 
-    var addPatientTemplate = function() {
-
+    var addNewPatient = function() {
+        // console.log("doctor.patient addNewPatient()");
+        var $lastLink = $container.find('[data-id]').filter('[href!="#"]:last');
+        var pageNum = parseInt($lastLink.attr('href').split("-")[1]);
+        $lastLink.parent().next('li.nav-item').children().first().attr('href', "#patient-" + pageNum);
+        var newPatientPage = $patientPage.clone().attr('id', 'patient-' + pageNum);
+        makeUnique(newPatientPage, pageNum);
+        $patientPage.parent().append(newPatientPage)
     };
 
     var sendPatientInfoRequest = function(patient_id) {
@@ -190,7 +184,7 @@ doctor.patient = (function() {
 
     return {
         init: init,
-        addPatient: addPatientTemplate,
+        addPatientPage: addNewPatient,
         makePageUnique: makeUnique
     };
 })();
