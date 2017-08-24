@@ -5,7 +5,8 @@ doctor.shell = (function() {
         $container = container;
         console.log("doctor shell init");
 
-        // send request and add register table items
+        // addRegTable(): add rows to register patient table
+        // addPatientList(): add patient list
         addPatientList([{name: "李白", id: 1534662}, {name: "杜甫", id: 2352645}, {name: "王维", id: 3221497}]);
     };
 
@@ -112,7 +113,7 @@ doctor.shell = (function() {
 
     return {
         init: init,
-        addRegTable: addRegTable,
+        // addRegTable: addRegTable,
         addPatient: addPatientList,
         addMultiRows: addMultiRows
     };
