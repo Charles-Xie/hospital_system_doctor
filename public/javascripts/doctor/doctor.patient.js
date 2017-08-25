@@ -38,12 +38,12 @@ doctor.patient = (function() {
         // });
     };
 
-    var makeUnique = function(node, seq) {
+    var makeUnique = function(page, seq) {
         console.log("makeUnique() called");
-        node.find('[id]').attr('id', function(index, id) {
+        page.find('[id]').attr('id', function(index, id) {
             return id + seq;
         });
-        node.find("[href$='-page']").attr('href', function(index, href) {
+        page.find("[href$='-page'],[href$='-modal']").attr('href', function(index, href) {
             // console.log(href);
             return href + seq;
         });
@@ -118,21 +118,25 @@ doctor.patient = (function() {
 // _________________________________________________ version 1 end
 
 // _________________________________________________ version 2 start
-    var showPatientInfo = function(pageInfo/* pageInfo JSON obj */) {
-        var page;          // page jQuery object
+    var showPatientInfo = function(pageInfo, page/* pageInfo JSON obj */) {
         var basicInfo = pageInfo.basicInfo;
+        console.log(basicInfo);
         addTableItems(page, 'table.patient-info-table', basicInfo);
 
         var diseaseDiag = pageInfo.diseaseDiag;
+        console.log(diseaseDiag);
         addTableItems(page, 'table.disease-diagnose-table', diseaseDiag, '[contenteditable="false"]');
 
         var treatSche = pageInfo.treatSche;
+        console.log(treatSche);
         doctor.shell.addMultiRows(page, 'table.treatment-schedule-table', treatSche, '[data-tag]');
 
         var recordCover = pageInfo.recordCover;
+        console.log(recordCover);
         addTableItems(page, 'table.record-cover-table', recordCover, '[data-tag]');
 
         var currentCheck = pageInfo.currentCheck;
+        console.log(currentCheck);
         doctor.shell.addMultiRows(page, 'table.current-check-table', currentCheck, '[data-tag]');
     };
  
@@ -146,14 +150,14 @@ doctor.patient = (function() {
             var itemName = $tds.eq(count).data('tag');
             // if no data-tag attribute, typeof itemName == undefined
             if(typeof itemName != 'undefined') {
-                if(typeof tableInfo(itemName) == 'string') {
-                    $tds.eq(count).text(tableInfo(itemName));
+                if(typeof tableInfo[itemName] == 'string') {
+                    $tds.eq(count).text(tableInfo[itemName]);
                 }
-                else if(typeof tableInfo(itemName) == 'undefined') {
+                else if(typeof tableInfo[itemName] == 'undefined') {
                     console.log("Haven't got info item" + tableSelector + " " + itemName);
                 }
                 else {
-                    $tds.eq(count).append(tableInfo(itemName));
+                    $tds.eq(count).append(tableInfo[itemName]);
                 }
             }
             count += 1;
@@ -163,24 +167,34 @@ doctor.patient = (function() {
     
 // _________________________________________________ version 2 end
 
-    var getPatientInfo = function(patient_id) {
-        doctor.con.emit("web_get_patient_info_apply", data, "web_get_patient_info_reply", showPatientInfo);
+    var getPatientInfo = function(patient_id, page) {
+        var data = {doc_id: doctor.getId(), pat_id: patient_id};
+        console.log(data.pat_id);
+        doctor.con.emit("web-get-patient-info-apply", data, "web-get-patient-info-reply", showPatientInfo, page);
     };
 
     // add event listener to patient items
     // so that when clicked they get and show info
     var addPatientListener = function() {
+        console.log("doctor.patient addPatientListener() called");
         var $patientItem = $('#patient-list-start');
 
         // add event listener
         $patientItem.parent().on('click', '[data-id]', function() {
             // condition; this page is not shown currently
             // that is, class != "active"
-            var dataId = this.attr('data-id');
-            var $page = $(this.attr('href'));
+            // console.log(this);
+            $this = $(this);
+            if($this.data('ver') == undefined) {
+                $this.attr('data-ver', '1');
+            }
+            else return;
+            console.log($this);
+            var dataId = $this.attr('data-id');
+            var $page = $($this.attr('href'));
             console.log("Click link data-id " + dataId);
             // send request and get data
-            getPatientInfo(dataId);
+            getPatientInfo(dataId, $page);
         });
     };
 
@@ -188,6 +202,7 @@ doctor.patient = (function() {
         init: init,
         addPatientPage: addPatientPage,
         addNewPatient: addNewPatient,
+        addPatientListener: addPatientListener,
         makePageUnique: makeUnique
     };
 })();

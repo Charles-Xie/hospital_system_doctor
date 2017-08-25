@@ -127,13 +127,23 @@ div.record-content {
   margin: 10px 5px;
 }
 
-table.patient-info-table td div{
+/* table.patient-info-table td div{
   height: 100%;
   width: 100%;
   border: 1px solid #ccc;
   margin: 1px;
-}
+} */
 
 table.chosen-medicine-table input {
-  width: 40px;
+  width: 35px;
+  outline: none;
+  border: none;
+}
+
+/* table.treatment-schedule-table td[contenteditable="true"] {
+  width: 50%;
+} */
+
+table {
+  table-layout: fixed;
 }

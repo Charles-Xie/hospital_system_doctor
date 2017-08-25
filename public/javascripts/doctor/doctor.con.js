@@ -5,7 +5,7 @@ doctor.con = (function () {
         $container = container;
     };
 
-    var emitToSql = function (event, data, waitForEvent, callback, timeout_opt, timeoutCallback_opt) {
+    var emitToSql = function (event, data, waitForEvent, callback, callbackParam, timeout_opt, timeoutCallback_opt) {
         console.log("doctor.con emitToSql() called");
         var replied = false;
         var listener = function (data) {
@@ -14,7 +14,7 @@ doctor.con = (function () {
             console.log('[active db]', waitForEvent, 'reply received', "data:", data);
             socketIO.removeListener(waitForEvent, listener);
             if (callback)
-                callback(data);
+                callback(data, callbackParam);
         };
         socketIO.on(waitForEvent, listener);
         console.log(event, data, 'to sql');

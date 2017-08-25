@@ -85,8 +85,15 @@ doctor.shell = (function() {
     var addRegTable = function(data) {
         console.log("addRegTable() called");
         var tableInfo = (data instanceof Array? data: data.result);
-        addMultiRows($container, '#reg-patient-table', tableInfo, '[data-tag]');
-        doctor.dynamic.addRegBtns($container);
+        var regNum = tableInfo.length;
+        if(regNum != 0) {
+            $('#reg-patient-table').prev('div').children('p').text("共有 " + regNum + " 位病人");
+            addMultiRows($container, '#reg-patient-table', tableInfo, '[data-tag]');
+            doctor.dynamic.addRegBtns($container);    
+        }
+        else {
+            console.log("no reg patient");
+        }
     };
 // ______________________________________ version 2 end
     
@@ -120,6 +127,7 @@ doctor.shell = (function() {
             );
         });
         doctor.patient.addPatientPage();
+        doctor.patient.addPatientListener();
     };
 
     return {
