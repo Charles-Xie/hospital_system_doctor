@@ -8,6 +8,10 @@ doctor.patient = (function() {
         console.log("doctor.patient init");
 
         $container = container;
+    };
+
+    var addPatientPage = function() {
+        console.log("doctor.patient addPatientPage() called");
         var $patientItem = $container.find('#patient-list-start');
 
         var countItemNum = 0;
@@ -17,7 +21,6 @@ doctor.patient = (function() {
         $patientPage.nextAll().remove();
 
         // function used to make ids in pages not repeated
-        
 
         while($patientItem.next().length != 0) {
             $patientItem = $patientItem.next('li.patient-item');
@@ -47,7 +50,7 @@ doctor.patient = (function() {
     };
 
     var addNewPatient = function() {
-        // console.log("doctor.patient addNewPatient()");
+        console.log("doctor.patient addNewPatient() called");
         var $lastLink = $container.find('[data-id]').filter('[href!="#"]:last');
         var pageNum = parseInt($lastLink.attr('href').split("-")[1]);
         $lastLink.parent().next('li.nav-item').children().first().attr('href', "#patient-" + pageNum);
@@ -184,7 +187,8 @@ doctor.patient = (function() {
 
     return {
         init: init,
-        addPatientPage: addNewPatient,
+        addPatientPage: addPatientPage,
+        addNewPatient: addNewPatient,
         makePageUnique: makeUnique
     };
 })();

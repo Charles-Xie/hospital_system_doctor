@@ -6,11 +6,12 @@ doctor.con = (function () {
     };
 
     var emitToSql = function (event, data, waitForEvent, callback, timeout_opt, timeoutCallback_opt) {
+        console.log("doctor.con emitToSql() called");
         var replied = false;
         var listener = function (data) {
             console.log('[active db] trigger one listener to', waitForEvent);
             replied = true;
-            console.log('[active db]', waitForEvent, 'reply received');
+            console.log('[active db]', waitForEvent, 'reply received', "data:", data);
             socketIO.removeListener(waitForEvent, listener);
             if (callback)
                 callback(data);

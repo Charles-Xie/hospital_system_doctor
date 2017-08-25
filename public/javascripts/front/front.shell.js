@@ -3,8 +3,8 @@ front.shell = (function () {
 
     var init = function (container) {
         $container = container;
-        front.modal.emit('web-get-reglist-apply','','web-get-reglist-reply',addRegList);
-        front.modal.emit('web-get-chat-apply','','web-get-chat-reply',addChatContent);
+        front.modal.emit('web-get-reglist-apply',{},'web-get-reglist-reply',addRegList);
+        front.modal.emit('web-get-chat-apply',{id: "345"},'web-get-chat-reply',addChatContent);
 
     }
 

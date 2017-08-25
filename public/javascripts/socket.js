@@ -1,6 +1,6 @@
 var socketIO;
 jQuery(function () {
-    var local = true;
+    var local = false;
     var DBadress = 'http://115.159.216.116:3200/web';
     var localAdress = 'http://loacalhost:3200/web';
 

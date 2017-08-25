@@ -1,6 +1,6 @@
 doctor.dynamic = (function() {
-    var initRegSelect = function(container) {
-        console.log("doctor.dynamic initRegSelect() called");
+    var addRegBtns = function(container) {
+        console.log("doctor.dynamic addRegBtns() called");
         var $table = container.find('#reg-patient-table');
         var chooseBtn = $table.find('button.btn-outline-primary');
         var finishBtn = $table.find('button.btn-outline-secondary');
@@ -11,7 +11,7 @@ doctor.dynamic = (function() {
             var name = $td.siblings('[data-tag="name"]').text();
             // add name and id to patient list
             doctor.shell.addPatient([{id: id, name: name}], ':last');
-            doctor.patient.addPatientPage();
+            doctor.patient.addNewPatient();
             // remove this row
             $td.parent().remove();
         });
@@ -31,10 +31,10 @@ doctor.dynamic = (function() {
 
     var init = function(container) {
         $container = container;
-        initRegSelect(container);
     };
 
     return {
-        init: init
+        init: init,
+        addRegBtns: addRegBtns
     };
 })();

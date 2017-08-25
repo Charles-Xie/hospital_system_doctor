@@ -7,31 +7,36 @@ doctor.shell = (function() {
 
         // addRegTable(): add rows to register patient table
         // addPatientList(): add patient list
-        addPatientList([{name: "李白", id: 1534662}, {name: "杜甫", id: 2352645}, {name: "王维", id: 3221497}]);
+        // addPatientList([{name: "李白", id: 1534662}, {name: "杜甫", id: 2352645}, {name: "王维", id: 3221497}]);
+        doctor.con.emit("web-get-regis-patient-apply", {id: doctor.getId()}, "web-get-regis-patient-reply", addRegTable);
+        doctor.con.emit("web-get-medical-patient-apply", {id: doctor.getId()}, "web-get-medical-patient-reply", addPatientList);
     };
 
     // Util
     // add several rows of same format to a table
     var addMultiRows = function(page, tableSelector, tableInfo, condition/* tableInfo JSON object array */) {
-        if(tableInfo.length == 0)
+        console.log("addMultiRows() called");
+        if(tableInfo.length == 0) {
             console.log("No items found");
             return;
+        }
         var $table = page.find(tableSelector);
-        var $row = $table.find(tr).first().clone();     // as row template
+        console.log($table, tableInfo);
+        var $row = $table.find('tr').eq(1).clone();     // as row template
         var $tbody = $table.find('tbody');
         $tbody.empty();
 
-        var addRowItems = function(tds, rowInfo) {
+        var addRowItems = function(tds, rowInfo/* rowInfo an object */) {
             var count = 0;
             var itemName;
             while(count < tds.length) {
                 itemName = tds.eq(count).data('tag');
                 if(typeof itemName!= 'undefined') {
-                    if(typeof rowInfo(itemName) == 'string') {
-                        tds.eq(count).text(rowInfo(itemName));
+                    if(typeof rowInfo[itemName] == 'string') {
+                        tds.eq(count).text(rowInfo[itemName]);
                     }
-                    else if(typeof itemName != 'undefined') {
-                        tds.eq(count).append(rowInfo(itemName));
+                    else if(typeof rowInfo[itemName] != 'undefined') {
+                        tds.eq(count).append(rowInfo[itemName]);
                     }
                 }
                 count += 1;
@@ -77,12 +82,15 @@ doctor.shell = (function() {
 // _______________________________________ version 1 end
 
 // ______________________________________ version 2 start
-    var addRegTable = function(page, tableInfo) {
-        addMultiRows(page, '#reg-patient-list', tableInfo, '[data-tag]');
+    var addRegTable = function(data) {
+        console.log("addRegTable() called");
+        var tableInfo = (data instanceof Array? data: data.result);
+        addMultiRows($container, '#reg-patient-table', tableInfo, '[data-tag]');
+        doctor.dynamic.addRegBtns($container);
     };
 // ______________________________________ version 2 end
     
-    var addPatientList = function(arr, itemSelector) {
+    var addPatientList = function(data, itemSelector) {
         // console.log(doctor.dynamic);
         // console.log($container);
         console.log("addPatientList() called");        
@@ -93,6 +101,8 @@ doctor.shell = (function() {
         // remove all the patient currently in this list
         // console.log(doctor.dynamic);
 
+        var arr = (data instanceof Array? data: data.result);
+        console.log(data.result);
         var $patientList = $patientItem.parent();
         arr.forEach(function(patient, index) {
             $patientList.append(
@@ -109,6 +119,7 @@ doctor.shell = (function() {
                     )
             );
         });
+        doctor.patient.addPatientPage();
     };
 
     return {

@@ -12,6 +12,8 @@ router.get('/', function(req, res, next) {
     res.sendFile('doctor_sys.html', options);
 });
 
-router.post();
+router.post('/', function(req, res) {
+    
+});
 
 module.exports = router;

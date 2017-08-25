@@ -8,10 +8,12 @@ var renderFront = function (res) {
 
 
 router.get('/',function (req,res) {
+    console.log("front get");
     renderFront(res);
 });
 
 router.post('/',function (req,res) {
+    console.log("front post");
     if(req.body.chat){
         var chatContent = req.body.chat;
         io.emitToSql('web-send-chat-apply',chatContent,'wen-send-chat-reply',function (data) {
