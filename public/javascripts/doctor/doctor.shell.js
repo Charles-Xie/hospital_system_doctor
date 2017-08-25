@@ -85,16 +85,21 @@ doctor.shell = (function() {
     var addRegTable = function(data) {
         console.log("addRegTable() called");
         var tableInfo = (data instanceof Array? data: data.result);
-        var regNum = tableInfo.length;
+        addMultiRows($container, '#reg-patient-table', tableInfo, '[data-tag]');
+        doctor.dynamic.addRegBtns($container);
+        updateRegNum();
+    };
+
+    var updateRegNum = function() {
+        var regNum = $('#reg-patient-table').find('tr').length - 1;
+        console.log("doctor.shell updateRegNum() called, reg num: " + regNum);
         if(regNum != 0) {
             $('#reg-patient-table').prev('div').children('p').text("共有 " + regNum + " 位病人");
-            addMultiRows($container, '#reg-patient-table', tableInfo, '[data-tag]');
-            doctor.dynamic.addRegBtns($container);    
         }
         else {
-            console.log("no reg patient");
+            console.log("No reg patient");
         }
-    };
+    }
 // ______________________________________ version 2 end
     
     var addPatientList = function(data, itemSelector) {
@@ -134,6 +139,7 @@ doctor.shell = (function() {
         init: init,
         // addRegTable: addRegTable,
         addPatient: addPatientList,
-        addMultiRows: addMultiRows
+        addMultiRows: addMultiRows,
+        updateRegNum: updateRegNum
     };
 })();

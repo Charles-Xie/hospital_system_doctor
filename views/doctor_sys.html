@@ -223,15 +223,15 @@
 													<tbody>
 														<tr>
 															<th>医院地址</th>
-															<td >XX市XX路XX号</td>
+															<td>XX市XX路XX号</td>
 															<th>医院网址</th>
-															<td >www.xxx.com</td>
+															<td>www.xxx.com</td>
 														</tr>
 														<tr>
 															<th></th>
 															<td></td>
 															<th>预检台电话</th>
-															<td >1234567</td>
+															<td>1234567</td>
 														</tr>
 													</tbody>
 												</table>
@@ -299,11 +299,11 @@
 													</tr>
 													<tr>
 														<th>体征</th>
-														<td colspan="3" contenteditable="true"></td>
+														<td colspan="3" contenteditable="true" data-tag="feature"></td>
 													</tr>
 													<tr>
 														<th>处理意见</th>
-														<td colspan="3" contenteditable="true"></td>
+														<td colspan="3" contenteditable="true" data-tag="suggest"></td>
 													</tr>
 												</table>
 											</div>
@@ -330,26 +330,11 @@
 																<button class="btn btn-secondary btn-sm">删除</button>
 															</td>
 														</tr>
-														<tr>
-															<td>2</td>
-															<td contenteditable="true"></td>
-															<td contenteditable="true"></td>
-															<td class="option-col-td">
-																<button class="btn btn-secondary btn-sm">删除</button>
-															</td>
-														</tr>
-														<tr>
-															<td>3</td>
-															<td contenteditable="true"></td>
-															<td contenteditable="true"></td>
-															<td class="option-col-td">
-																<button class="btn btn-secondary btn-sm">删除</button>
-															</td>
-														</tr>
 													</tbody>
 												</table>
 												<div>
-													<button class="btn btn-outline-success" data-toggle="modal" data-target="#treatment-modal">添加新项</button>
+													<!-- <button class="btn btn-outline-success" data-toggle="modal" data-target="#treatment-modal">添加新项</button> -->
+													<button class="btn btn-outline-success treatment-schedule-add">添加新项</button>
 												</div>
 												<!-- Modal -->
 												<div class="modal fade" id="treatment-modal" tabindex="-1" role="dialog" aria-labelledby="treatment-modal-label" aria-hidden="true">
@@ -363,16 +348,15 @@
 															</div>
 															<div class="modal-body">
 																<div class="form-group row">
-																	<label for="example-number-input" class="col-3 col-form-label">治疗阶段</label>
+																	<label for="stage-number-input" class="col-3 col-form-label">治疗阶段</label>
 																	<div class="col-9">
-																		<input class="form-control" type="number" value="1" id="example-number-input">
+																		<input class="form-control" type="number" value="1" min="1" max="10" data-tag="stage">
 																	</div>
 																</div>
 																<div class="form-group row">
-																	<label for="example-text-input" class="col-3 col-form-label">治疗方式</label>
+																	<label class="col-3 col-form-label">治疗方式</label>
 																	<div class="col-9">
-																		<select class="custom-select">
-																				<!-- <option selected>选择治疗方式</option> -->
+																		<select class="custom-select" data-tag="method">
 																				<option selected value="用药">用药</option>
 																				<option value="手术">手术</option>
 																				<option value="住院">住院</option>
@@ -381,14 +365,14 @@
 																	</div>
 																</div>
 																<div class="form-group row">
-																	<label for="example-text-input" class="col-3 col-form-label">具体信息</label>
+																	<label for="info-text-input" class="col-3 col-form-label">具体信息</label>
 																	<div class="col-9">
-																		<input class="form-control" type="text" id="example-text-input">
+																		<input class="form-control" type="text" data-tag="info">
 																	</div>
 																</div>
 															</div>
 															<div class="modal-footer">
-																<button type="button" class="btn btn-primary" data-dismiss="modal">保存</button>
+																<button type="button" class="btn btn-primary treatment-modal-save" data-dismiss="modal">保存</button>
 															</div>
 														</div>
 													</div>
@@ -880,6 +864,7 @@
 		<script src="javascripts/doctor/doctor.shell.js"></script>
 		<script src="javascripts/doctor/doctor.patient.js"></script>
 		<script src="javascripts/doctor/doctor.dynamic.js"></script>
+		<script src="javascripts/doctor/doctor.modal.js"></script>		
 		<script>
 			$(document).ready(
 				function () {

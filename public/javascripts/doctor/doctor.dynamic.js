@@ -1,4 +1,8 @@
 doctor.dynamic = (function() {
+    var treatNewPatient = function(patientId) {
+        doctor.con.emit("web-change-regis-patient-apply", {doc_id: doctor.getId(), pat_id: patientId}, "web-change-regis-patient-reply");
+    };
+
     var addRegBtns = function(container) {
         console.log("doctor.dynamic addRegBtns() called");
         var $table = container.find('#reg-patient-table');
@@ -14,6 +18,8 @@ doctor.dynamic = (function() {
             doctor.patient.addNewPatient();
             // remove this row
             $td.parent().remove();
+            doctor.shell.updateRegNum();
+            treatNewPatient(id);
         });
         // console.log(doctor.shell);
 

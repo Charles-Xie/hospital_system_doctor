@@ -43,10 +43,13 @@ doctor.patient = (function() {
         page.find('[id]').attr('id', function(index, id) {
             return id + seq;
         });
-        page.find("[href$='-page'],[href$='-modal']").attr('href', function(index, href) {
+        page.find("[href$='-page']").attr('href', function(index, href) {
             // console.log(href);
             return href + seq;
         });
+        page.find("[data-target$='-modal']").attr('data-target', function(index, target){
+            return target + seq;
+        })
     };
 
     var addNewPatient = function() {
@@ -59,64 +62,6 @@ doctor.patient = (function() {
         $patientPage.parent().append(newPatientPage)
     };
 
-// _________________________________________________ version 1 start
-    // patient: patient info
-    // var showPatientInfo = function(page, patient) {
-    //     var $page = page;
-    //     var $table, tdsVal;
-
-    //     // basic info table
-    //     // var $tds = $page.find('table.patient-info-table').find('td');
-    //     // $tds.forEach(function(td, index) {
-    //     //     td.text(patient[index]);
-    //     // });
-    //     var basicInfo;
-    //     $table = $page.find('table.patient-info-table');
-    //     tdsVal = [basicInfo.name, basicInfo.age, basicInfo.gen, basicInfo.fee, basicInfo.ub, basicInfo.rb];
-    //     addTableItems($table, tdsVal);
-
-    //     // disease-diagnose-table
-    //     var diseaseDiag;
-    //     $table = $page.find('table.disease-diagnose-table');
-    //     tdsVal = [diseaseDiag.date, diseaseDiag.doctor, diseaseDiag.history];
-    //     addTableItems($table, tdsVal, "[contenteditable='false']");
-
-    //     // treatment-schedule-table
-    //     // wait
-
-    //     // record-cover-table
-    //     var 
-    //     // record-history-table
-
-    //     // check-item-table
-
-    //     // check-option-table
-
-    //     // search-result-table
-
-    //     // chosen-medicine-table
-    // };
-    
-    // // add array items to a table
-    // var addTableItems = function(table, tdsVal, condition) {
-    //     var $tds = table.find('td');
-    //     if(typeof condition == 'string') {
-    //         $tds = $tds.filter(condition);
-    //     }
-    //     var count = 0;
-    //     while(count < tdsVal.length && count < $tds.length) {
-    //         if(typeof tdsVal[count] == 'string' || typeof tdsVal[count] == 'number') {
-    //             $tds.eq(count).text(tdsVal[count]);
-    //         }
-    //         else {
-    //             $tds.eq(count).append(tdsVal[count]);
-    //         }
-    //     }
-    // count += 1;
-    // }; 
-
-// _________________________________________________ version 1 end
-
 // _________________________________________________ version 2 start
     var showPatientInfo = function(pageInfo, page/* pageInfo JSON obj */) {
         var basicInfo = pageInfo.basicInfo;
@@ -125,7 +70,7 @@ doctor.patient = (function() {
 
         var diseaseDiag = pageInfo.diseaseDiag;
         console.log(diseaseDiag);
-        addTableItems(page, 'table.disease-diagnose-table', diseaseDiag, '[contenteditable="false"]');
+        addTableItems(page, 'table.disease-diagnose-table', diseaseDiag, '[data-tag]');
 
         var treatSche = pageInfo.treatSche;
         console.log(treatSche);
@@ -163,7 +108,6 @@ doctor.patient = (function() {
             count += 1;
         }
     };
-
     
 // _________________________________________________ version 2 end
 
