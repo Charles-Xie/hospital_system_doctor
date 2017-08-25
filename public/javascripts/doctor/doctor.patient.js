@@ -59,10 +59,6 @@ doctor.patient = (function() {
         $patientPage.parent().append(newPatientPage)
     };
 
-    var sendPatientInfoRequest = function(patient_id) {
-
-    };
-
 // _________________________________________________ version 1 start
     // patient: patient info
     // var showPatientInfo = function(page, patient) {
@@ -122,7 +118,8 @@ doctor.patient = (function() {
 // _________________________________________________ version 1 end
 
 // _________________________________________________ version 2 start
-    var showPatientInfo = function(page, pageInfo/* page is jQuery obj and pageInfo JSON obj */) {
+    var showPatientInfo = function(pageInfo/* pageInfo JSON obj */) {
+        var page;          // page jQuery object
         var basicInfo = pageInfo.basicInfo;
         addTableItems(page, 'table.patient-info-table', basicInfo);
 
@@ -166,6 +163,10 @@ doctor.patient = (function() {
     
 // _________________________________________________ version 2 end
 
+    var getPatientInfo = function(patient_id) {
+        doctor.con.emit("web_get_patient_info_apply", data, "web_get_patient_info_reply", showPatientInfo);
+    };
+
     // add event listener to patient items
     // so that when clicked they get and show info
     var addPatientListener = function() {
@@ -179,9 +180,7 @@ doctor.patient = (function() {
             var $page = $(this.attr('href'));
             console.log("Click link data-id " + dataId);
             // send request and get data
-            sendPatientInfoRequest(dataId);
-
-            showPatientInfo(page, patientInfo);
+            getPatientInfo(dataId);
         });
     };
 
