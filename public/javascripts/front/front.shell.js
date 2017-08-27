@@ -5,13 +5,12 @@ front.shell = (function () {
         $container = container;
         front.modal.emit('web-get-reglist-apply',{},'web-get-reglist-reply',addRegList);
         front.modal.emit('web-get-chat-apply',{id: "345"},'web-get-chat-reply',addChatContent);
-
-    }
+    };
 
     var addChatContent = function (content) {
         var $text = $('#chatContent');
         $text.val(content);
-    }
+    };
 
     var regTableRefresh = function() {
         front.modal.getRegList().then(function(arr) {

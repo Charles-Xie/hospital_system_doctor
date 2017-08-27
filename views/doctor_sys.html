@@ -61,7 +61,7 @@
 								<a class="nav-link disabled" href="#">诊治列表<span class="badge badge-default">3</span><span class="sr-only">(current)</span></a>
 							</li>
 							<!-- <ol> -->
-							<li class="nav-item">
+							<!-- <li class="nav-item">
 								<a class="nav-link" href="#patient-" data-toggle="pill">1. 李白</a>
 							</li>
 							<li class="nav-item">
@@ -69,7 +69,7 @@
 							</li>
 							<li class="nav-item">
 								<a class="nav-link" href="#patient-" data-toggle="pill">3. 王维</a>
-							</li>
+							</li> -->
 						</ul>
 					</nav>
 					<main class="col-sm-9 offset-sm-3 col-md-10 offset-md-2 pt-3">
@@ -143,7 +143,7 @@
 												</td>
 											</tr>
 										</table>
-										<button class="btn btn-outline-primary btn-sm">完成诊治</button>
+										<button class="btn btn-outline-primary btn-sm basic-info-finish">完成诊治</button>
 									</div>
 								</div>
 								<div class="segment-line"></div>
@@ -306,6 +306,9 @@
 														<td colspan="3" contenteditable="true" data-tag="suggest"></td>
 													</tr>
 												</table>
+												<div>
+													<button class="btn btn-outline-primary disease-diagnose-save">保存</button>
+												</div>
 											</div>
 										</div>
 										<br>
@@ -323,17 +326,18 @@
 													</thead>
 													<tbody>
 														<tr>
-															<td data-tag="stage"></td>
+															<td data-tag="stage" contenteditable="true">1</td>
 															<td data-tag="method" contenteditable="true"></td>
 															<td data-tag="info" contenteditable="true"></td>
 															<td class="option-col-td">
-																<button class="btn btn-secondary btn-sm">删除</button>
+																<button class="btn btn-secondary btn-sm treatment-schedule-del">删除</button>
 															</td>
 														</tr>
 													</tbody>
 												</table>
 												<div>
 													<!-- <button class="btn btn-outline-success" data-toggle="modal" data-target="#treatment-modal">添加新项</button> -->
+													<button class="btn btn-outline-primary treatment-schedule-save">保存</button>
 													<button class="btn btn-outline-success treatment-schedule-add">添加新项</button>
 												</div>
 												<!-- Modal -->
@@ -474,8 +478,8 @@
 											<div class="col-md-5">
 												<!-- search bar here -->
 												<div class="input-group">
-													<input type="text" class="form-control" placeholder="搜索药品" aria-describedby="basic-addon2">
-													<span class="input-group-addon" id="basic-addon2">
+													<input type="text" class="form-control" placeholder="搜索药品">
+													<span class="input-group-addon search-medicine-mark">
 															<!-- to use the search icon must include font-awesome css -->
 															<i class="fa fa-search" aria-hidden="true"></i>
 														</span>
@@ -491,43 +495,23 @@
 													<table class="table table-bordered table-hover search-result-table">
 														<thead>
 															<tr>
-																<th>序号</th>
+																<th>简称</th>
 																<th>药品名</th>
 																<th>单价</th>
-																<th>库存数量</th>
+																<th>库存</th>
 																<th>规格</th>
 																<th>操作</th>
 															</tr>
 														</thead>
 														<tbody>
 															<tr>
-																<td>1</td>
-																<td></td>
-																<td></td>
-																<td></td>
-																<td></td>
+																<td data-tag="short"></td>
+																<td data-tag="name"></td>
+																<td data-tag="price"></td>
+																<td data-tag="left"></td>
+																<td data-tag="spec"></td>
 																<td>
-																	<button class="btn btn-outline-primary btn-sm">选择</button>
-																</td>
-															</tr>
-															<tr>
-																<td>2</td>
-																<td></td>
-																<td></td>
-																<td></td>
-																<td></td>
-																<td>
-																	<button class="btn btn-outline-primary btn-sm">选择</button>
-																</td>
-															</tr>
-															<tr>
-																<td>3</td>
-																<td></td>
-																<td></td>
-																<td></td>
-																<td></td>
-																<td>
-																	<button class="btn btn-outline-primary btn-sm">选择</button>
+																	<button class="btn btn-outline-primary btn-sm search-result-choose">选择</button>
 																</td>
 															</tr>
 														</tbody>
@@ -537,77 +521,49 @@
 											<div class="col-md-7">
 												<!-- 已选择的药品 -->
 												<section>
-													<h4>已选药品</h4>
+													<h4>药品选项</h4>
 													<table class="table table-bordered chosen-medicine-table">
 														<thead>
 															<tr>
-																<th>序号</th>
 																<th>药品名</th>
 																<th>单价</th>
 																<th>数量</th>
-																<th>用法用量</th>
+																<th>每日/次</th>
+																<th>用药/天</th>
 																<th>操作</th>
 															</tr>
 														</thead>
 														<tbody>
 															<tr>
-																<td>1</td>
-																<td></td>
-																<td></td>
-																<td><input type="number" value=1 min="0" max="100"></td>
+																<td data-tag="name"></td>
+																<td data-tag="price"></td>
+																<td data-tag="quan" contenteditable="true"></td>
+																<td data-tag="times" contenteditable="true"></td>
+																<td data-tag="days" contenteditable="true"></td>
 																<td>
-																	<div>每日<input type="number" value=1 min="0" max="100">次</div>
-																	<div>服用<input type="number" value=1 min="0" max="100">天</div>
-																</td>
-																<td>
-																	<button class="btn btn-secondary btn-sm">删除</button>
-																</td>
-															</tr>
-															<tr>
-																<td>2</td>
-																<td></td>
-																<td></td>
-																<td><input type="number" value=1 min="0" max="100"></td>
-																<td>
-																	<div>每日<input type="number" value=1 min="0" max="100">次</div>
-																	<div>服用<input type="number" value=1 min="0" max="100">天</div>
-																</td>
-																<td>
-																	<button class="btn btn-secondary btn-sm">删除</button>
-																</td>
-															</tr>
-															<tr>
-																<td>3</td>
-																<td></td>
-																<td></td>
-																<td><input type="number" value=1 min="0" max="100"></td>
-																<td>
-																	<div>每日<input type="number" value=1 min="0" max="100">次</div>
-																	<div>服用<input type="number" value=1 min="0" max="100">天</div>
-																</td>
-																<td>
-																	<button class="btn btn-secondary btn-sm">删除</button>
+																	<button class="btn btn-secondary btn-sm chosen-medicine-del">删除</button>
 																</td>
 															</tr>
 														</tbody>
 													</table>
-													<button class="btn btn-outline-success" data-toggle="modal" data-target="#bill-modal">查看药品单</button>
+													<button class="btn btn-outline-primary chosen-medicine-save">保存</button>
+													<button class="btn btn-outline-success medicine-bill-show" data-toggle="modal" data-target="#bill-modal">查看药品账单</button>
 												</section>
 												<!-- bill modal here -->
-												<div class="modal fade" id="bill-modal" tabindex="-1" role="dialog" aria-labelledby="bill-modal-label" aria-hidden="true">
+												<div class="modal fade medicine-bill-modal" id="bill-modal" tabindex="-1" role="dialog" aria-labelledby="bill-modal-label" aria-hidden="true">
 													<div class="modal-dialog modal-lg" role="document">
 														<div class="modal-content">
 															<div class="modal-header">
 																<h5 class="modal-title" id="bill-modal-label">药品账单</h5>
 																<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-																					<span aria-hidden="true">&times;</span>
-																				</button>
+																	<span aria-hidden="true">&times;</span>
+																</button>
 															</div>
 															<div class="modal-body">
-																<table class="table table-bordered table-hover">
+																<table class="table table-bordered table-hover medicine-bill-table">
 																	<thead>
 																		<tr>
-																			<th>序号</th>
+																			<!-- <th>序号</th> -->
 																			<th>药品名</th>
 																			<th>单价</th>
 																			<th>用法用量</th>
@@ -617,29 +573,16 @@
 																	</thead>
 																	<tbody>
 																		<tr>
-																			<td>1</td>
-																			<td></td>
-																			<td></td>
-																			<td></td>
-																			<td></td>
-																		</tr>
-																		<tr>
-																			<td>2</td>
-																			<td></td>
-																			<td></td>
-																			<td></td>
-																			<td></td>
-																		</tr>
-																		<tr>
-																			<td>3</td>
-																			<td></td>
-																			<td></td>
-																			<td></td>
-																			<td></td>
+																			<!-- <td>1</td> -->
+																			<td data-tag="name"></td>
+																			<td data-tag="price"></td>
+																			<td data-tag="use"></td>
+																			<td data-tag="quan"></td>
+																			<td data-tag="total"></td>
 																		</tr>
 																	</tbody>
 																</table>
-																<h5>共计：￥***.** </h5>
+																<h5>共计：￥<span class="total-price"></span> </h5>
 															</div>
 															<div class="modal-footer">
 																<button class="btn btn-primary">确认</button>
@@ -864,7 +807,7 @@
 		<script src="javascripts/doctor/doctor.shell.js"></script>
 		<script src="javascripts/doctor/doctor.patient.js"></script>
 		<script src="javascripts/doctor/doctor.dynamic.js"></script>
-		<script src="javascripts/doctor/doctor.modal.js"></script>		
+		<script src="javascripts/doctor/doctor.modal.js"></script>
 		<script>
 			$(document).ready(
 				function () {
