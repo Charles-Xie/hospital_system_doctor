@@ -5,9 +5,6 @@ doctor.shell = (function() {
         $container = container;
         console.log("doctor shell init");
 
-        // addRegTable(): add rows to register patient table
-        // addPatientList(): add patient list
-        // addPatientList([{name: "李白", id: 1534662}, {name: "杜甫", id: 2352645}, {name: "王维", id: 3221497}]);
         doctor.con.emit("web-get-regis-patient-apply", {id: doctor.getId()}, "web-get-regis-patient-reply", addRegTable);
         doctor.con.emit("web-get-medical-patient-apply", {id: doctor.getId()}, "web-get-medical-patient-reply", addPatientList);
     };

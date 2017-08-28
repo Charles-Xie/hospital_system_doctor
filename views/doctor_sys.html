@@ -60,16 +60,6 @@
 							<li class="nav-item" id="patient-list-start">
 								<a class="nav-link disabled" href="#">诊治列表<span class="badge badge-default">3</span><span class="sr-only">(current)</span></a>
 							</li>
-							<!-- <ol> -->
-							<!-- <li class="nav-item">
-								<a class="nav-link" href="#patient-" data-toggle="pill">1. 李白</a>
-							</li>
-							<li class="nav-item">
-								<a class="nav-link" href="#patient-" data-toggle="pill">2. 杜甫</a>
-							</li>
-							<li class="nav-item">
-								<a class="nav-link" href="#patient-" data-toggle="pill">3. 王维</a>
-							</li> -->
 						</ul>
 					</nav>
 					<main class="col-sm-9 offset-sm-3 col-md-10 offset-md-2 pt-3">
@@ -410,7 +400,7 @@
 															<td data-tag="state"></td>
 															<!-- <td></td> -->
 															<td>
-																<button type="button" class="btn btn-sm btn-outline-primary">点击查看报告</button>
+																<button type="button" class="btn btn-sm btn-outline-primary check-report-show">查看报告</button>
 															</td>
 														</tr>
 													</tbody>
@@ -419,54 +409,22 @@
 										</div>
 										<br>
 										<div class="row">
-											<div class="col-lg-5 col-md-5">
+											<div class="col-lg-12 col-md-12">
 												<!-- check item list -->
 												<h4>选择检查项目</h4>
-												<ul class="list-group">
-													<li class="list-group-item">泌尿科检查
-														<ul>
-															<li>尿常规</li>
-															<li>尿蛋白</li>
-														</ul>
-													</li>
-													<li class="list-group-item">血液检查
-														<ul>
-															<li>血常规</li>
-															<li>血小板</li>
-														</ul>
-													</li>
-													<li class="list-group-item">X光
-														<ul>
-															<li>胸透</li>
-															<li>B超</li>
-														</ul>
-													</li>
-												</ul>
-											</div>
-											<div class="col-lg-7 col-md-7">
-												<h4>检查项目选项</h4>
-												<table class="table table-bordered check-option-table">
-													<thead>
-														<tr>
-															<td data-tag="name">名称</td>
-															<td data-tag="time">时间</td>
-															<td data-tag="location">地点</td>
-															<td data-tag="expense">费用</td>
-															<td data-tag="more">备注</td>
-														</tr>
-													</thead>
+												<table class="table">
 													<tbody>
 														<tr>
-															<td></td>
-															<td></td>
-															<td></td>
-															<td></td>
-															<td contenteditable="true"></td>
+															<td><button class="btn btn-outline-primary check-item-choose">B超</button></td>
+															<td><button class="btn btn-outline-primary check-item-choose">血清</button></td>
+															<td><button class="btn btn-outline-primary check-item-choose">验血</button></td>
+															<td><button class="btn btn-outline-primary check-item-choose">验尿</button></td>
 														</tr>
 													</tbody>
 												</table>
-												<button type="button" class="btn btn-outline-primary">生成项目单</button>
-												<button type="button" class="btn btn-secondary">发给检查科</button>
+											</div>
+											<div class="col-lg-7 col-md-7">
+												<button type="button" class="btn btn-outline-success check-item-send">确定并发送</button>
 											</div>
 										</div>
 									</div>
@@ -550,7 +508,8 @@
 													<button class="btn btn-outline-success medicine-bill-show" data-toggle="modal" data-target="#bill-modal">查看药品账单</button>
 												</section>
 												<!-- bill modal here -->
-												<div class="modal fade medicine-bill-modal" id="bill-modal" tabindex="-1" role="dialog" aria-labelledby="bill-modal-label" aria-hidden="true">
+												<div class="modal fade medicine-bill-modal" id="bill-modal" tabindex="-1" role="dialog" aria-labelledby="bill-modal-label"
+												 aria-hidden="true">
 													<div class="modal-dialog modal-lg" role="document">
 														<div class="modal-content">
 															<div class="modal-header">
@@ -598,15 +557,6 @@
 									</div>
 								</div>
 							</div>
-
-							<div class="tab-pane fade patient-page" id="patient2">
-								this is page of patient2
-							</div>
-
-							<div class="tab-pane fade patient-page" id="patient3">
-								this is page of patient3
-							</div>
-
 					</main>
 					</div>
 
@@ -807,7 +757,6 @@
 		<script src="javascripts/doctor/doctor.shell.js"></script>
 		<script src="javascripts/doctor/doctor.patient.js"></script>
 		<script src="javascripts/doctor/doctor.dynamic.js"></script>
-		<script src="javascripts/doctor/doctor.modal.js"></script>
 		<script>
 			$(document).ready(
 				function () {

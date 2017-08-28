@@ -15,8 +15,11 @@ doctor.patient = (function() {
         var pageId = '#patient-';
         addDiseaDiagSave(pageId);
         addTreatScheDels(pageId);
+        addCheckItemSend(pageId);
+        addCheckItemToggle(pageId);
         addMedicineDels(pageId);
         addMedicineBillShow(pageId);
+        addCheckReportShow(pageId);
     };
 
     var addPatientPage = function() {
@@ -73,7 +76,8 @@ doctor.patient = (function() {
 
 // _________________________________________________ version 2 start
     var showPatientInfo = function(pageInfo, page/* pageInfo JSON obj */) {
-        var basicInfo = pageInfo.basicInfo;
+        var basicInfo = pageInfo.basicInfo;screen
+        
         // console.log(basicInfo);
         addTableItems(page, 'table.patient-info-table', basicInfo);
 
@@ -104,7 +108,7 @@ doctor.patient = (function() {
             var itemName = $tds.eq(count).data('tag');
             // if no data-tag attribute, typeof itemName == undefined
             if(typeof itemName != 'undefined') {
-                if(typeof tableInfo[itemName] == 'string') {
+                if(typeof tableInfo[itemName] == 'string' || typeof tableInfo[itemName] == 'number') {
                     $tds.eq(count).text(tableInfo[itemName]);
                 }
                 else if(typeof tableInfo[itemName] == 'undefined') {
@@ -331,8 +335,57 @@ doctor.patient = (function() {
             }
             doctor.con.emit('web-get-prescribe-apply', {doc_id: doctor.getId(), pat_id: patientId}, 'web-get-prescribe-reply', showMedicineBillInfo, page);
             // count the total price
-        })
-    }
+        });
+    };
+
+    var addCheckItemToggle = function(pageId) {
+        var $buttons = $(pageId).find('button.check-item-choose');
+        $buttons.click(function() {
+            var $this = $(this);
+            if($this.hasClass('active')) {
+                $this.removeClass('active');
+            }
+            else {
+                $this.addClass('active');
+            }
+        });
+    };
+
+    var addCheckItemSend = function(pageId) {
+        var $button = $(pageId).find('button.check-item-send');
+        $button.click(function(){
+            var page = $(this).parents('[data-patient]');
+            var patientId = page.data('patient').toString();
+            var showCurrentCheck = function(data, page) {
+                console.log("showCurrentCheck() called");
+                data = data.result;
+                if(data instanceof Array) {
+                    doctor.shell.addMultiRows(page, 'table.current-check-table', data, '[data-tag]', true);
+                }
+            };
+            var data = {doc_id: doctor.getId(), pat_id: patientId};
+            data.array = [];
+            var chosenButtons = page.find('button.check-item-choose').filter('.active');
+            for(var i = 0; i < chosenButtons.length; i++) {
+                data.array.push({name: chosenButtons.eq(i).text()});
+            }
+            doctor.con.emit('web-add-exam-item-apply', data, 'web-add-exam-item-reply', showCurrentCheck, page);            
+        });
+    };
+
+    var addCheckReportShow = function(pageId) {
+        var $button = $(pageId).find('button.check-report-show');
+        $button.click(function() {
+            var $this = $(this);
+            var page = $this.parents('[data-patient]');
+            var patientId = page.data('patient').toString();
+            var itemId = $this.parent().siblings('[data-tag="id"]').text();
+            doctor.con.emit(
+                'web-get-presentation-apply', 
+                {doc_id: doctor.getId(), pat_id: patientId, item_id: itemId}, 
+                'web-get-presentation-reply');
+        });
+    };
 
     var initListener2 = function(pageId) {
         removeTemplates(pageId);

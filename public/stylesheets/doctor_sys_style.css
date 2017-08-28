@@ -147,3 +147,7 @@ table.chosen-medicine-table input {
 table {
   table-layout: fixed;
 }
+
+button.check-item-choose {
+  width: 100%;
+}
