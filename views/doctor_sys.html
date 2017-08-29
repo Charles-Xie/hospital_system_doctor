@@ -7,7 +7,7 @@
 	<meta name="description" content="">
 	<meta name="author" content="">
 
-	<title>Doctor System</title>
+	<title>医生在线工作系统</title>
 
 	<!-- Bootstrap core CSS -->
 	<link href="https://cdn.bootcss.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" rel="stylesheet">
@@ -31,7 +31,7 @@
 		<div class="collapse navbar-collapse" id="navbarsExampleDefault">
 			<ul class="navbar-nav mr-auto">
 				<li class="nav-item active">
-					<a class="nav-link" href="#patient" data-toggle="tab">病患<span class="sr-only">(current)</span></a>
+					<a class="nav-link" href="#patient" data-toggle="tab">病患</a>
 				</li>
 				<li class="nav-item">
 					<a class="nav-link" href="#job" data-toggle="tab">工作</a>
@@ -55,10 +55,10 @@
 					<nav class="col-sm-3 col-md-2 hidden-xs-down bg-faded sidebar">
 						<ul class="nav nav-pills flex-column">
 							<li class="nav-item">
-								<a class="nav-link active" href="#register-patient-page" data-toggle="pill">挂号预约<span class="badge badge-default">3</span><span class="sr-only">(current)</span></a>
+								<a class="nav-link active" href="#register-patient-page" data-toggle="pill">挂号预约<span class="badge badge-default"></span></a>
 							</li>
 							<li class="nav-item" id="patient-list-start">
-								<a class="nav-link disabled" href="#">诊治列表<span class="badge badge-default">3</span><span class="sr-only">(current)</span></a>
+								<a class="nav-link disabled" href="#">诊治列表<span class="badge badge-default"></span></a>
 							</li>
 						</ul>
 					</nav>
@@ -94,7 +94,7 @@
 									</tbody>
 								</table>
 								<div>
-									<button class="btn btn-outline-success" data-toggle="modal" data-target="#record-modal">刷新列表</button>
+									<button class="btn btn-outline-success" id="reg-patient-ref">刷新列表</button>
 								</div>
 							</div>
 
@@ -145,8 +145,8 @@
 									<li class="nav-item dropdown">
 										<a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">电子病历</a>
 										<div class="dropdown-menu">
-											<a class="dropdown-item" href="#record-cover-page" data-toggle="tab">病历信息</a>
-											<!-- <a class="dropdown-item" href="#record-history-page" data-toggle="tab">病历记录</a> -->
+											<a class="dropdown-item" href="#record-cover-page" data-toggle="tab">病历首页</a>
+											<a class="dropdown-item" href="#record-history-page" data-toggle="tab">病历记录</a>
 											<a class="dropdown-item" href="#record-report-page" data-toggle="tab">检验报告</a>
 										</div>
 									</li>
@@ -245,7 +245,7 @@
 										</div>
 									</div>
 
-									<!-- <div class="tab-pane fade" id="record-history-page">
+									<div class="tab-pane fade" id="record-history-page">
 											<div class="row">
 												<div class="col-lg-2"></div>
 												<div class="col-lg-8 record-content">
@@ -265,7 +265,7 @@
 													</table>
 												</div>
 											</div>
-										</div> -->
+										</div>
 									<div class="tab-pane fade" id="record-report-page">
 										<!-- shows the report in the medical record -->
 										this is a page
@@ -275,6 +275,7 @@
 										<div class="row">
 											<div class="col-lg-12">
 												<h4>病情诊断</h4>
+												<br>
 												<table class="table table-hover table-bordered disease-diagnose-table">
 													<!-- this table is editable -->
 													<tr>
@@ -301,10 +302,11 @@
 												</div>
 											</div>
 										</div>
-										<br>
+										<hr>
 										<div class="row">
 											<div class="col-md-12">
 												<h4>治疗方案</h4>
+												<br>
 												<table class="table table-hover table-bordered treatment-schedule-table">
 													<thead>
 														<tr>
@@ -382,12 +384,15 @@
 											<!-- table here of current check item of this patient当前的检查项目 -->
 											<div class="col-lg-12 col-md-12">
 												<h4>当前检查项目</h4>
+												<br>
 												<table class="table table-bordered table-condensed current-check-table">
 													<thead>
 														<tr>
 															<th>编号</th>
 															<th>名称</th>
 															<th>费用</th>
+															<th>时间</th>
+															<th>地点</th>
 															<th>状态</th>
 															<th>报告</th>
 														</tr>
@@ -397,6 +402,8 @@
 															<td data-tag="id"></td>
 															<td data-tag="name"></td>
 															<td data-tag="expense"></td>
+															<td data-tag="time"></td>
+															<td data-tag="location"></td>
 															<td data-tag="state"></td>
 															<!-- <td></td> -->
 															<td>
@@ -407,11 +414,12 @@
 												</table>
 											</div>
 										</div>
-										<br>
+										<hr>
 										<div class="row">
 											<div class="col-lg-12 col-md-12">
 												<!-- check item list -->
 												<h4>选择检查项目</h4>
+												<br>
 												<table class="table">
 													<tbody>
 														<tr>
@@ -444,10 +452,11 @@
 												</div>
 											</div>
 										</div>
-										<br>
+										<hr>
 										<div class="row">
 											<div class="col-md-5">
 												<h4>搜索结果</h4>
+												<br>
 												<div>
 													<!-- search result here -->
 													<table class="table table-bordered table-hover search-result-table">
@@ -480,6 +489,7 @@
 												<!-- 已选择的药品 -->
 												<section>
 													<h4>药品选项</h4>
+													<br>
 													<table class="table table-bordered chosen-medicine-table">
 														<thead>
 															<tr>
@@ -569,7 +579,7 @@
 						<nav class="col-sm-3 col-md-2 hidden-xs-down bg-faded sidebar">
 							<ul class="nav nav-pills flex-column">
 								<li class="nav-item">
-									<a class="nav-link active" href="#rsvtion-list" data-toggle="pill">预约列表 <span class="badge badge-default">3</span><span class="sr-only">(current)</span></a>
+									<a class="nav-link active" href="#rsvtion-list" data-toggle="pill">预约列表 <span class="badge badge-default">3</span></a>
 								</li>
 								<li class="nav-item">
 									<a class="nav-link" href="#doc-time-schedule" data-toggle="pill">查房安排</a>
@@ -746,17 +756,15 @@
 		<script src="javascripts/lib/tether.min.js"></script>
 		<script src="https://cdn.bootcss.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"></script>
 		<script src="javascripts/lib/socket.io.js"></script>
-		<script src="javascripts/lib/socket.io.js"></script>
 		<!-- <script src="http://code.gijgo.com/1.4.0/js/gijgo.js" type="text/javascript"></script> -->
 		<!-- <link href="http://code.gijgo.com/1.4.0/css/gijgo.css" rel="stylesheet" type="text/css" /> -->
 		<!-- <script src="response2.js"></script> -->
 		<script src="javascripts/socket.js"></script>
-		<script src="javascripts/dashboard.shell.js"></script>
+		<!-- <script src="javascripts/dashboard.shell.js"></script> -->
 		<script src="javascripts/doctor/doctor.js"></script>
 		<script src="javascripts/doctor/doctor.con.js"></script>
 		<script src="javascripts/doctor/doctor.shell.js"></script>
 		<script src="javascripts/doctor/doctor.patient.js"></script>
-		<script src="javascripts/doctor/doctor.dynamic.js"></script>
 		<script>
 			$(document).ready(
 				function () {

@@ -5,10 +5,9 @@ var doctor = (function() {
     var init = function(container) {
         $container = container;
         setId(3);
-        dashboard.init($container);
+        // dashboard.init($container);
         doctor.shell.init($container);
         doctor.patient.init($container);
-        doctor.dynamic.init($container);
     };
 
     var setId = function(id) {

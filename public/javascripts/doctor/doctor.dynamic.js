@@ -20,6 +20,7 @@ doctor.dynamic = (function() {
             $td.parent().remove();
             doctor.shell.updateRegNum();
             treatNewPatient(id);
+            
         });
         // console.log(doctor.shell);
 

@@ -151,3 +151,7 @@ table {
 button.check-item-choose {
   width: 100%;
 }
+
+hr {
+  border: 1px solid #ccc;
+}

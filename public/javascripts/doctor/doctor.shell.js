@@ -7,6 +7,9 @@ doctor.shell = (function() {
 
         doctor.con.emit("web-get-regis-patient-apply", {id: doctor.getId()}, "web-get-regis-patient-reply", addRegTable);
         doctor.con.emit("web-get-medical-patient-apply", {id: doctor.getId()}, "web-get-medical-patient-reply", addPatientList);
+
+        $container.find('#reg-patient-table').children('tbody').children('tr').eq(0).hide();
+        addRefBtn(container);
     };
 
     // Util
@@ -53,24 +56,39 @@ doctor.shell = (function() {
         console.log("addRegTable() called");
         var tableInfo = (data instanceof Array? data: data.result);
         addMultiRows($container, '#reg-patient-table', tableInfo, '[data-tag]');
-        doctor.dynamic.addRegBtns($container);
+        addRegBtns($container);
         updateRegNum();
     };
 
     var updateRegNum = function() {
-        var regNum = $('#reg-patient-table').find('tr').length - 1;
+        var regNum = $('#reg-patient-table').find('tr:visible').length - 1;
         console.log("doctor.shell updateRegNum() called, reg num: " + regNum);
+        var regNumLabel = $('#patient-list-start').prev('li.nav-item').find('span.badge');
         if(regNum != 0) {
             $('#reg-patient-table').prev('div').children('p').text("共有 " + regNum + " 位病人");
+            regNumLabel.text(regNum);
         }
         else {
+            regNumLabel.text("");
             console.log("No reg patient");
         }
-    }
+    };
 // ______________________________________ version 2 end
+
+    // update when items added
+    var updatePatientNum = function() {
+        var item = $('#patient-list-start');
+        var patientNum = item.nextAll('li.nav-item').length;
+        var patientNumLabel = item.find('span.badge');
+        if(patientNum == 0) {
+            patientNumLabel.text("");
+        }
+        else {
+            patientNumLabel.text(patientNum);
+        }
+    }
     
     var addPatientList = function(data, itemSelector) {
-        // console.log(doctor.dynamic);
         // console.log($container);
         console.log("addPatientList() called");        
         var $patientItem = (typeof itemSelector == 'undefined'? 
@@ -78,7 +96,6 @@ doctor.shell = (function() {
             $container.find('#patient-list-start').parent().children('li.nav-item').filter(itemSelector));
         $patientItem.nextAll().remove();
         // remove all the patient currently in this list
-        // console.log(doctor.dynamic);
 
         var arr = (data instanceof Array? data: data.result);
         console.log(data.result);
@@ -98,14 +115,53 @@ doctor.shell = (function() {
                     )
             );
         });
+        updatePatientNum();
         doctor.patient.addPatientPage();
         doctor.patient.addPatientListener();
     };
 
+    var sendTreatNewInfo = function(patientId) {
+        doctor.con.emit("web-change-regis-patient-apply", {doc_id: doctor.getId(), pat_id: patientId}, "web-change-regis-patient-reply");
+    };
+
+    var addRegBtns = function(container) {
+        console.log("doctor.shell addRegBtns() called");
+        var $table = container.find('#reg-patient-table');
+        var chooseBtn = $table.find('button.btn-outline-primary');
+        var finishBtn = $table.find('button.btn-outline-secondary');
+
+        chooseBtn.click(function() {
+            var $td = $(this).parent();
+            var id = $td.siblings('[data-tag="id"]').text();
+            var name = $td.siblings('[data-tag="name"]').text();
+            // add name and id to patient list
+            addPatient([{id: id, name: name}], ':last');
+            doctor.patient.addNewPatient();
+            // remove this row
+            $td.parent().remove();
+            updatePatientNum();
+            sendTreatNewInfo(id);
+        });
+        // console.log(doctor.shell);
+
+        finishBtn.click(function() {
+            var $td = $(this).parent();
+            // remind info?
+            // remove this row
+            $td.parent().remove();
+        });
+    };
+
+    var addRefBtn = function(container) {
+        var refreshBtn = container.find('button#reg-patient-ref');        
+        refreshBtn.click(function() {
+            doctor.con.emit("web-get-regis-patient-apply", {id: doctor.getId()}, "web-get-regis-patient-reply", addRegTable);
+        });
+    };
+
+
     return {
         init: init,
-        addPatient: addPatientList,
         addMultiRows: addMultiRows,
-        updateRegNum: updateRegNum
     };
 })();
