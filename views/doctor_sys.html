@@ -23,7 +23,7 @@
 <body>
 	<nav class="navbar navbar-toggleable-md navbar-inverse fixed-top bg-inverse">
 		<button class="navbar-toggler navbar-toggler-right hidden-lg-up" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault"
-		 aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+		    aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>
 			</button>
 		<a class="navbar-brand" href="#">医生在线工作系统</a>
@@ -37,7 +37,7 @@
 					<a class="nav-link" href="#job" data-toggle="tab">工作</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" href="#option" data-toggle="tab">选项</a>
+					<a class="nav-link" href="#option" data-toggle="tab">账号</a>
 				</li>
 			</ul>
 			<form class="form-inline mt-2 mt-md-0">
@@ -133,7 +133,7 @@
 												</td>
 											</tr>
 										</table>
-										<button class="btn btn-outline-primary btn-sm basic-info-finish">完成诊治</button>
+										<!-- <button class="btn btn-outline-primary btn-sm basic-info-finish">完成诊治</button> -->
 									</div>
 								</div>
 								<div class="segment-line"></div>
@@ -147,7 +147,6 @@
 										<div class="dropdown-menu">
 											<a class="dropdown-item" href="#record-cover-page" data-toggle="tab">病历首页</a>
 											<a class="dropdown-item" href="#record-history-page" data-toggle="tab">病历记录</a>
-											<a class="dropdown-item" href="#record-report-page" data-toggle="tab">检验报告</a>
 										</div>
 									</li>
 									<li class="nav-item">
@@ -246,26 +245,28 @@
 									</div>
 
 									<div class="tab-pane fade" id="record-history-page">
-											<div class="row">
-												<div class="col-lg-2"></div>
-												<div class="col-lg-8 record-content">
-													<table class="table table-hover table-bordered record-history-table">
-														<thead class="thead-default">
-															<tr>
-																<th>初诊记录</th>
-																<th>复诊记录</th>
-															</tr>
-														</thead>
-														<tbody>
-															<tr>
-																<td></td>
-																<td></td>
-															</tr>
-														</tbody>
-													</table>
-												</div>
+										<div class="row">
+											<div class="col-lg-2"></div>
+											<div class="col-lg-8 record-content">
+												<table class="table table-hover table-bordered record-history-table">
+													<thead class="thead-default">
+														<tr>
+															<th>就医日期</th>
+															<th>诊治记录</th>
+															<th>具体信息</th>
+														</tr>
+													</thead>
+													<tbody>
+														<tr>
+															<td data-tag="date"></td>
+															<td data-tag="info"></td>
+															<td></td>
+														</tr>
+													</tbody>
+												</table>
 											</div>
 										</div>
+									</div>
 									<div class="tab-pane fade" id="record-report-page">
 										<!-- shows the report in the medical record -->
 										this is a page
@@ -328,7 +329,7 @@
 													</tbody>
 												</table>
 												<div>
-													<!-- <button class="btn btn-outline-success" data-toggle="modal" data-target="#treatment-modal">添加新项</button> -->
+													<button class="btn btn-outline-success" data-toggle="modal" data-target="#treatment-modal">添加新项</button>
 													<button class="btn btn-outline-primary treatment-schedule-save">保存</button>
 													<button class="btn btn-outline-success treatment-schedule-add">添加新项</button>
 												</div>
@@ -407,11 +408,31 @@
 															<td data-tag="state"></td>
 															<!-- <td></td> -->
 															<td>
-																<button type="button" class="btn btn-sm btn-outline-primary check-report-show">查看报告</button>
+																<button type="button" class="btn btn-sm btn-outline-primary check-report-show" data-toggle="modal" data-target="#check-report-modal">
+																	查看报告
+																</button>
 															</td>
 														</tr>
 													</tbody>
 												</table>
+												<!-- Modal -->
+												<div class="modal fade check-report-modal" id="check-report-modal" tabindex="-1" role="dialog" aria-labelledby="check-report-label" aria-hidden="true">
+													<div class="modal-dialog modal-lg" role="document">
+														<div class="modal-content">
+															<div class="modal-header">
+																<h5 class="modal-title" id="check-report-label">检查报告</h5>
+																<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+																		<span aria-hidden="true">&times;</span>
+																	</button>
+															</div>
+															<div class="modal-body">
+															</div>
+															<div class="modal-footer">
+																<button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+															</div>
+														</div>
+													</div>
+												</div>
 											</div>
 										</div>
 										<hr>
@@ -514,12 +535,12 @@
 															</tr>
 														</tbody>
 													</table>
-													<button class="btn btn-outline-primary chosen-medicine-save">保存</button>
+													<button class="btn btn-outline-primary chosen-medicine-save">确定并发送</button>
 													<button class="btn btn-outline-success medicine-bill-show" data-toggle="modal" data-target="#bill-modal">查看药品账单</button>
 												</section>
 												<!-- bill modal here -->
 												<div class="modal fade medicine-bill-modal" id="bill-modal" tabindex="-1" role="dialog" aria-labelledby="bill-modal-label"
-												 aria-hidden="true">
+												    aria-hidden="true">
 													<div class="modal-dialog modal-lg" role="document">
 														<div class="modal-content">
 															<div class="modal-header">
@@ -579,16 +600,16 @@
 						<nav class="col-sm-3 col-md-2 hidden-xs-down bg-faded sidebar">
 							<ul class="nav nav-pills flex-column">
 								<li class="nav-item">
-									<a class="nav-link active" href="#rsvtion-list" data-toggle="pill">预约列表 <span class="badge badge-default">3</span></a>
+									<a class="nav-link active" href="#doctor-info" data-toggle="pill">医生信息<span class="badge badge-default">3</span></a>
 								</li>
-								<li class="nav-item">
+								<!-- <li class="nav-item">
 									<a class="nav-link" href="#doc-time-schedule" data-toggle="pill">查房安排</a>
-								</li>
+								</li> -->
 							</ul>
 						</nav>
 						<main class="col-sm-9 offset-sm-3 col-md-10 offset-md-2 pt-3">
 							<div class="tab-content">
-								<div class="tab-pane fade show active" id="rsvtion-list">
+								<div class="tab-pane fade show active" id="doctor-info">
 									<!-- 预约列表 -->
 									<div class="row">
 										<div class="col-md-2"></div>
@@ -722,6 +743,8 @@
 								</div>
 							</div>
 						</main>
+
+
 					</div>
 				</div>
 				<!-- biggest tab pane level1 second over-->
@@ -763,6 +786,7 @@
 		<!-- <script src="javascripts/dashboard.shell.js"></script> -->
 		<script src="javascripts/doctor/doctor.js"></script>
 		<script src="javascripts/doctor/doctor.con.js"></script>
+		<script src="javascripts/doctor/doctor.util.js"></script>
 		<script src="javascripts/doctor/doctor.shell.js"></script>
 		<script src="javascripts/doctor/doctor.patient.js"></script>
 		<script>

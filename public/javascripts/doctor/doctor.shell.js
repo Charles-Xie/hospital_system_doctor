@@ -12,50 +12,11 @@ doctor.shell = (function() {
         addRefBtn(container);
     };
 
-    // Util
-    // add several rows of same format to a table
-    var addMultiRows = function(page, tableSelector, tableInfo, condition, includeEvents = false/* tableInfo JSON object array */) {
-        // console.log("addMultiRows() called");
-        if(tableInfo.length == 0) {
-            console.log("No items found");
-            return;
-        }
-        var $table = page.find(tableSelector);
-        // console.log($table, tableInfo);
-        var $tableTemp = page.data('patient') == undefined? $table: $('#patient-').find(tableSelector);
-        var $row = $tableTemp.children('tbody').children().eq(0);     // as row template
-        var $tbody = $table.find('tbody');
-        $tbody.empty();
-
-        var addRowItems = function(tds, rowInfo/* rowInfo an object */) {
-            var count = 0;
-            var itemName;
-            while(count < tds.length) {
-                itemName = tds.eq(count).data('tag');
-                if(typeof itemName!= 'undefined') {
-                    if(typeof rowInfo[itemName] == 'string' || typeof rowInfo[itemName] == 'number') {
-                        tds.eq(count).text(rowInfo[itemName]);
-                    }
-                    else if(typeof rowInfo[itemName] != 'undefined') {
-                        tds.eq(count).append(rowInfo[itemName]);
-                    }
-                }
-                count += 1;
-            }
-        };
-
-        tableInfo.forEach(function(rowInfo, index) {
-            var newRow = $row.clone(includeEvents);
-            addRowItems(((typeof condition == 'string')? newRow.find('td').filter(condition): newRow.find('td')), rowInfo);
-            $tbody.append(newRow);
-        });
-    };
-
 // ______________________________________ version 2 start
     var addRegTable = function(data) {
         console.log("addRegTable() called");
         var tableInfo = (data instanceof Array? data: data.result);
-        addMultiRows($container, '#reg-patient-table', tableInfo, '[data-tag]');
+        doctor.util.addMultiRows($container, '#reg-patient-table', tableInfo, '[data-tag]');
         addRegBtns($container);
         updateRegNum();
     };
@@ -161,7 +122,6 @@ doctor.shell = (function() {
 
 
     return {
-        init: init,
-        addMultiRows: addMultiRows,
+        init: init
     };
 })();

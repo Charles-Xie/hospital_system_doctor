@@ -20,6 +20,7 @@ doctor.patient = (function() {
         addMedicineDels(pageId);
         addMedicineBillShow(pageId);
         addCheckReportShow(pageId);
+        // addBasicInfoFinish(pageId);
     };
 
     var addPatientPage = function() {
@@ -40,7 +41,6 @@ doctor.patient = (function() {
 
             //initialize the patient PAGE
             var newPatientPage = $patientPage.clone(true).attr('id', 'patient-' + countItemNum);
-            makeUnique(newPatientPage, countItemNum);
             $patientPage.parent().append(newPatientPage);
             newPatientPage.attr('data-patient', $patientItem.children('a.nav-link').first().data('id'));
             initListener2("#patient-" + countItemNum);
@@ -57,6 +57,7 @@ doctor.patient = (function() {
             return href + seq;
         });
         page.find("[data-target$='-modal']").attr('data-target', function(index, target){
+            console.log("data-target: " + target + seq);
             return target + seq;
         })
     };
@@ -68,7 +69,6 @@ doctor.patient = (function() {
         $lastLink = $lastLink.parent().next('li.nav-item').children().first();
         $lastLink.attr('href', "#patient-" + pageNum);
         var newPatientPage = $patientPage.clone(true).attr('id', 'patient-' + pageNum);
-        makeUnique(newPatientPage, pageNum);
         $patientPage.parent().append(newPatientPage);
         newPatientPage.attr('data-patient', $lastLink.data('patient'));
         initListener2("#patient-" + countItemNum);
@@ -79,55 +79,69 @@ doctor.patient = (function() {
         var basicInfo = pageInfo.basicInfo;screen
         
         // console.log(basicInfo);
-        addTableItems(page, 'table.patient-info-table', basicInfo);
+        doctor.util.addTableItems(
+            page, 
+            'table.patient-info-table', 
+            basicInfo);
 
         var diseaseDiag = pageInfo.diseaseDiag;
         // console.log(diseaseDiag);
-        addTableItems(page, 'table.disease-diagnose-table', diseaseDiag, '[data-tag]');
+        doctor.util.addTableItems(
+            page, 
+            'table.disease-diagnose-table', 
+            diseaseDiag, 
+            '[data-tag]');
 
         var treatSche = pageInfo.treatSche;
         // console.log(treatSche);
-        doctor.shell.addMultiRows(page, 'table.treatment-schedule-table', treatSche, '[data-tag]', true);
+        doctor.util.addMultiRows(
+            page, 
+            'table.treatment-schedule-table', 
+            treatSche, 
+            '[data-tag]', 
+            true);
 
         var recordCover = pageInfo.recordCover;
         // console.log(recordCover);
-        addTableItems(page, 'table.record-cover-table', recordCover, '[data-tag]');
+        doctor.util.addTableItems(
+            page, 
+            'table.record-cover-table', 
+            recordCover, 
+            '[data-tag]');
 
         var currentCheck = pageInfo.currentCheck;
         // console.log(currentCheck);
-        doctor.shell.addMultiRows(page, 'table.current-check-table', currentCheck, '[data-tag]', true);
+        doctor.util.addMultiRows(
+            page, 
+            'table.current-check-table', 
+            currentCheck, 
+            '[data-tag]', 
+            true);
+
+        var recordHistory = pageInfo.recordHistory;
+        doctor.utl.addMultiRows(
+            page, 
+            '', 
+            recordHistory, 
+            '', 
+            '[data-tag]');
+
+        makeUnique(page, page.attr('id').split('-')[1]);
     };
         
-    // add info to items in table
-    var addTableItems = function(page, tableSelector, tableInfo, condition/* tableInfo is JSON obj */) {
-        if(typeof tableInfo)
-        var $table = page.find(tableSelector);
-        var $tds = (typeof condition == 'string')? $table.find('td').filter(condition): $table.find('td');
-        var count = 0;
-        while(count < $tds.length) {
-            var itemName = $tds.eq(count).data('tag');
-            // if no data-tag attribute, typeof itemName == undefined
-            if(typeof itemName != 'undefined') {
-                if(typeof tableInfo[itemName] == 'string' || typeof tableInfo[itemName] == 'number') {
-                    $tds.eq(count).text(tableInfo[itemName]);
-                }
-                else if(typeof tableInfo[itemName] == 'undefined') {
-                    console.log("Haven't got info item" + tableSelector + " " + itemName);
-                }
-                else {
-                    $tds.eq(count).append(tableInfo[itemName]);
-                }
-            }
-            count += 1;
-        }
-    };
+    
     
 // _________________________________________________ version 2 end
 
     var getPatientInfo = function(patient_id, page) {
         var data = {doc_id: doctor.getId(), pat_id: patient_id};
         console.log(data.pat_id);
-        doctor.con.emit("web-get-patient-info-apply", data, "web-get-patient-info-reply", showPatientInfo, page);
+        doctor.con.emit(
+            "web-get-patient-info-apply", 
+            data, 
+            "web-get-patient-info-reply", 
+            showPatientInfo, 
+            page);
     };
 
     // add event listener to patient items
@@ -156,10 +170,10 @@ doctor.patient = (function() {
     };
 
     var addDiseaDiagSave = function(pageId) {
-        console.log("doctor.patient addDiseaDiagSave() called, pageId: " + pageId);
+        // console.log("doctor.patient addDiseaDiagSave() called, pageId: " + pageId);
         var $button = $(pageId).find('button.disease-diagnose-save');
         $button.click(function() {
-            console.log("disease diagnose save button clicked");
+            // console.log("disease diagnose save button clicked");
             var patientId = $(pageId).data('patient');
             var $table = $(pageId).find('table.disease-diagnose-table');
             var $tds = $table.find('td[contenteditable="true"]');
@@ -169,7 +183,10 @@ doctor.patient = (function() {
                 data[$tds.eq(count).data('tag')] = $tds.eq(count).text();
                 count += 1;
             }
-            doctor.con.emit("web-change-disease-diagnosis-apply", data, "web-change-disease-diagnosis-reply");
+            doctor.con.emit(
+                "web-change-disease-diagnosis-apply", 
+                data, 
+                "web-change-disease-diagnosis-reply");
         });
     };
 
@@ -179,7 +196,7 @@ doctor.patient = (function() {
         $button.click(function() {
             console.log("add treat sche button clicked");
             var $table = $(pageId).find('table.treatment-schedule-table');
-            var rowTemp = $('#patient-').find('table.treatment-schedule-table').children('tbody').children().eq(0).clone();
+            var rowTemp = $('#patient-').find('table.treatment-schedule-table').children('tbody').children().eq(0).clone(true);
             rowTemp.children('td[data-tag="stage"]').text($table.find('tr').length);
             // addDeleteListener(rowTemp.find('button.treatment-schedule-del'));
             // get the first row of the template table
@@ -196,12 +213,12 @@ doctor.patient = (function() {
     }
 
     var addTreatScheDels = function(pageId) {
-        console.log("addTreatScheDels() called");
+        // console.log("addTreatScheDels() called");
         addDels(pageId, 'button.treatment-schedule-del')
     };
 
     var addMedicineDels = function(pageId) {
-        console.log("addMedicineDels() called");
+        // console.log("addMedicineDels() called");
         addDels(pageId, 'button.chosen-medicine-del');
     };
 
@@ -245,10 +262,14 @@ doctor.patient = (function() {
             data = {name: $(this).prev().val()};
             // send request and get info
             var showMedicineSearchResult = function(info) {
-                doctor.shell.addMultiRows($(pageId), 'table.search-result-table', info, '[data-tag]');
+                doctor.util.addMultiRows($(pageId), 'table.search-result-table', info, '[data-tag]');
                 addMedicineChoose(pageId);
             };
-            doctor.con.emit("web-get-drug-info-apply", data, "web-get-drug-info-reply", showMedicineSearchResult);
+            doctor.con.emit(
+                "web-get-drug-info-apply", 
+                data, 
+                "web-get-drug-info-reply", 
+                showMedicineSearchResult);
         });
         $button.prev().keydown(function() {
             if(event.keyCode == "13") {
@@ -286,7 +307,11 @@ doctor.patient = (function() {
     };
 
     var removeTemplates = function(pageId) {
-        var tableNames = ['.treatment-schedule-table', '.current-check-table', '.search-result-table', '.chosen-medicine-table'];
+        var tableNames = [
+            '.treatment-schedule-table', 
+            '.current-check-table', 
+            '.search-result-table', 
+            '.chosen-medicine-table'];
         for(var i = 0; i < tableNames.length; i++) {
             $(pageId).find(tableNames[i]).children('tbody').children('tr').eq(0).remove();
         }
@@ -311,10 +336,19 @@ doctor.patient = (function() {
                 chosenData.push(chosenItem);
             }
             data.chosen = chosenData;
-            doctor.con.emit("web-add-prescribe-apply", data, "web-add-prescribe-reply");
+            var alertMedicineSaveResult = function(data, page) {
+                doctor.util.alertResult(data, page, "药品单成功发送", "药品单已发送，不能重复操作");
+            };
+            doctor.con.emit(
+                "web-add-prescribe-apply", 
+                data, 
+                "web-add-prescribe-reply", 
+                alertMedicineSaveResult, 
+                $(pageId));
         });
     };
 
+    
     var addMedicineBillShow = function(pageId) {
         var $button = $(pageId).find('button.medicine-bill-show');
         $button.click(function() {
@@ -326,14 +360,23 @@ doctor.patient = (function() {
                 if(data == undefined) {
                     return;
                 }
-                doctor.shell.addMultiRows(page, 'table.medicine-bill-table', data, '[data-tag]');    
+                doctor.util.addMultiRows(
+                    page, 
+                    'table.medicine-bill-table', 
+                    data, 
+                    '[data-tag]');    
                 var totalPrice = 0;
                 for(var i = 0; i < data.length; i++) {
                     totalPrice += parseInt(data[i].total);
                 }
                 page.find('span.total-price').text(totalPrice);            
             }
-            doctor.con.emit('web-get-prescribe-apply', {doc_id: doctor.getId(), pat_id: patientId}, 'web-get-prescribe-reply', showMedicineBillInfo, page);
+            doctor.con.emit(
+                'web-get-prescribe-apply', 
+                {doc_id: doctor.getId(), pat_id: patientId}, 
+                'web-get-prescribe-reply', 
+                showMedicineBillInfo, 
+                page);
             // count the total price
         });
     };
@@ -356,11 +399,18 @@ doctor.patient = (function() {
         $button.click(function(){
             var page = $(this).parents('[data-patient]');
             var patientId = page.data('patient').toString();
+
             var showCurrentCheck = function(data, page) {
                 console.log("showCurrentCheck() called");
+                doctor.util.alertResult(data, page, "检查项目成功发送", "检查项目已经发送，不能重复操作");
                 data = data.result;
                 if(data instanceof Array) {
-                    doctor.shell.addMultiRows(page, 'table.current-check-table', data, '[data-tag]', true);
+                    doctor.util.addMultiRows(
+                        page, 
+                        'table.current-check-table', 
+                        data, 
+                        '[data-tag]', 
+                        true);
                 }
             };
             var data = {doc_id: doctor.getId(), pat_id: patientId};
@@ -369,12 +419,21 @@ doctor.patient = (function() {
             for(var i = 0; i < chosenButtons.length; i++) {
                 data.array.push({name: chosenButtons.eq(i).text()});
             }
-            doctor.con.emit('web-add-exam-item-apply', data, 'web-add-exam-item-reply', showCurrentCheck, page);            
+            doctor.con.emit(
+                'web-add-exam-item-apply', 
+                data, 
+                'web-add-exam-item-reply', 
+                showCurrentCheck, 
+                page);            
         });
     };
 
     var addCheckReportShow = function(pageId) {
         var $button = $(pageId).find('button.check-report-show');
+        var showCheckReport = function(data, page) {
+            data = typeof data.result == "string"? data.result: "结果正常";
+            page.find('div.check-report-modal').find('.modal-body').append(data);
+        };
         $button.click(function() {
             var $this = $(this);
             var page = $this.parents('[data-patient]');
@@ -383,9 +442,15 @@ doctor.patient = (function() {
             doctor.con.emit(
                 'web-get-presentation-apply', 
                 {doc_id: doctor.getId(), pat_id: patientId, item_id: itemId}, 
-                'web-get-presentation-reply');
+                'web-get-presentation-reply',
+                showCheckReport,
+                page);
         });
     };
+
+    // var addBasicInfoFinish = function(pageId) {
+    //     var patient_id = $(pageId).data('patient');
+    // }
 
     var initListener2 = function(pageId) {
         removeTemplates(pageId);
@@ -404,6 +469,5 @@ doctor.patient = (function() {
         addPatientPage: addPatientPage,
         addNewPatient: addNewPatient,
         addPatientListener: addPatientListener,
-        makePageUnique: makeUnique
     };
 })();
