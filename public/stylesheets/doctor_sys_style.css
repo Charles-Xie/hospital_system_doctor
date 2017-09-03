@@ -2,10 +2,13 @@
  * Base structure
  */
 
+
 /* Move down content because we have a fixed navbar that is 50px tall */
+
 body {
   padding-top: 50px;
 }
+
 
 /*
  * Sidebar
@@ -19,11 +22,14 @@ body {
   z-index: 1000;
   padding: 20px;
   overflow-x: hidden;
-  overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+  overflow-y: auto;
+  /* Scrollable contents if viewport is shorter than content. */
   border-right: 1px solid #eee;
 }
 
+
 /* Sidebar navigation */
+
 .sidebar {
   padding-left: 0;
   padding-right: 0;
@@ -37,7 +43,7 @@ body {
   width: 100%;
 }
 
-.sidebar .nav-item + .nav-item {
+.sidebar .nav-item+.nav-item {
   margin-left: 0;
 }
 
@@ -53,11 +59,13 @@ body {
   border: 2px solid #f1f1f1;
 }
 
+
 /*
 chat window style
 */
 
-.chat-block, .chat-window {
+.chat-block,
+.chat-window {
   height: 100%;
 }
 
@@ -95,7 +103,8 @@ chat window style
   border: 0px;
 }
 
-#medical-record th, #treatment-schedule th {
+#medical-record th,
+#treatment-schedule th {
   background-color: #f1f1f1;
 }
 
@@ -115,7 +124,9 @@ td.option-col-td>button {
   width: 40%;
 }
 
+
 /*this line divide the page into two part*/
+
 div.segment-line {
   border-bottom: 2px solid #ccc;
   margin: 15px 0;
@@ -126,6 +137,7 @@ div.record-content {
   padding: 20px 5px 10px 5px;
   margin: 10px 5px;
 }
+
 
 /* table.patient-info-table td div{
   height: 100%;
@@ -140,6 +152,7 @@ table.chosen-medicine-table input {
   border: none;
 }
 
+
 /* table.treatment-schedule-table td[contenteditable="true"] {
   width: 50%;
 } */
@@ -148,7 +161,8 @@ table {
   table-layout: fixed;
 }
 
-button.check-item-choose {
+button.check-item-choose,
+button.clinical-measure-show {
   width: 100%;
 }
 
