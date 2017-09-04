@@ -152,9 +152,9 @@
 									<li class="nav-item">
 										<a class="nav-link" href="#check-page" data-toggle="tab">检查项目</a>
 									</li>
-									<li class="nav-item">
+									<!-- <li class="nav-item">
 										<a class="nav-link" href="#medicine-page" data-toggle="tab">开具药品</a>
-									</li>
+									</li> -->
 									<li class="nav-item">
 										<a class="nav-link" href="#clinical-page" data-toggle="tab">医疗措施</a>
 									</li>
@@ -326,6 +326,7 @@
 											</div>
 										</div>
 									</div>
+
 									<div class="tab-pane fade show active" id="treatment-schedule-page">
 										<!-- 治疗方案 -->
 										<div class="row">
@@ -433,7 +434,6 @@
 										</div>
 									</div>
 
-
 									<div class="tab-pane fade" id="check-page">
 										<!-- 检查项目 tab-level2 -->
 										<div class="row">
@@ -514,16 +514,12 @@
 										</div>
 									</div>
 
-
-									<div class="tab-pane fade" id="medicine-page">
-										<!-- 药品账单 -->
+									<!-- <div class="tab-pane fade" id="medicine-page">
 										<div class="row">
 											<div class="col-md-5">
-												<!-- search bar here -->
 												<div class="input-group">
 													<input type="text" class="form-control" placeholder="搜索药品">
 													<span class="input-group-addon search-medicine-mark">
-															<!-- to use the search icon must include font-awesome css -->
 															<i class="fa fa-search" aria-hidden="true"></i>
 														</span>
 												</div>
@@ -535,7 +531,6 @@
 												<h4>搜索结果</h4>
 												<br>
 												<div>
-													<!-- search result here -->
 													<table class="table table-bordered table-hover search-result-table">
 														<thead>
 															<tr>
@@ -563,7 +558,6 @@
 												</div>
 											</div>
 											<div class="col-md-6">
-												<!-- 已选择的药品 -->
 												<section>
 													<h4>药品选项</h4>
 													<br>
@@ -594,7 +588,6 @@
 													<button class="btn btn-outline-primary chosen-medicine-save">确定并发送</button>
 													<button class="btn btn-outline-success medicine-bill-show" data-toggle="modal" data-target="#bill-modal">查看药品账单</button>
 												</section>
-												<!-- bill modal here -->
 												<div class="modal fade medicine-bill-modal" id="bill-modal" tabindex="-1" role="dialog" aria-labelledby="bill-modal-label"
 												    aria-hidden="true">
 													<div class="modal-dialog modal-lg" role="document">
@@ -609,7 +602,6 @@
 																<table class="table table-bordered table-hover medicine-bill-table">
 																	<thead>
 																		<tr>
-																			<!-- <th>序号</th> -->
 																			<th>药品名</th>
 																			<th>单价</th>
 																			<th>用法用量</th>
@@ -619,7 +611,6 @@
 																	</thead>
 																	<tbody>
 																		<tr>
-																			<!-- <td>1</td> -->
 																			<td data-tag="name"></td>
 																			<td data-tag="price"></td>
 																			<td data-tag="use"></td>
@@ -632,8 +623,6 @@
 															</div>
 															<div class="modal-footer">
 																<button class="btn btn-primary">确认</button>
-																<!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> -->
-																<!-- <button type="button" class="btn btn-primary">Save changes</button> -->
 															</div>
 														</div>
 													</div>
@@ -641,7 +630,7 @@
 												<br>
 											</div>
 										</div>
-									</div>
+									</div> -->
 
 									<div class="tab-pane fade" id="clinical-page">
 										<!-- 医疗措施 -->
@@ -652,93 +641,161 @@
 												<table class="table">
 													<tbody>
 														<tr>
-															<td><button class="btn btn-outline-primary clinical-measure-show" data-toggle="modal" data-target="#clinical-medicine-modal">用药</button></td>
-															<td><button class="btn btn-outline-primary clinical-measure-show" data-toggle="modal" data-target="#clinical-measure-modal">注射</button></td>
-															<td><button class="btn btn-outline-primary clinical-measure-show" data-toggle="modal" data-target="#clinical-measure-modal">输液</button></td>
-															<td><button class="btn btn-outline-primary clinical-measure-show" data-toggle="modal" data-target="#clinical-measure-modal">清创</button></td>
+															<td>
+																<button class="btn btn-outline-primary clinical-measure-show" data-toggle="modal" data-target="#clinical-measure-modal">用药</button>
+															</td>
+															<td>
+																<button class="btn btn-outline-primary clinical-measure-show" data-toggle="modal" data-target="#clinical-measure-modal">注射</button>
+															</td>
+															<td>
+																<button class="btn btn-outline-primary clinical-measure-show" data-toggle="modal" data-target="#clinical-measure-modal">输液</button>
+															</td>
+															<td>
+																<button class="btn btn-outline-primary clinical-measure-show" data-toggle="modal" data-target="#clinical-measure-modal">清创</button>
+															</td>
 														</tr>
 													</tbody>
 												</table>
 
 												<!-- clinical measure modal here -->
-												<div class="modal fade clinical-medicine-modal" id="clinical-medicine-modal" tabindex="-1" role="dialog" aria-labelledby="clinical-medicine-label"
+												<div class="modal fade clinical-measure-modal" id="clinical-measure-modal" tabindex="-1" role="dialog" aria-labelledby="clinical-measure-label"
 												    aria-hidden="true">
-													<div class="modal-dialog modal-lg" role="document">
+													<div class="modal-dialog" role="document">
 														<div class="modal-content">
 															<div class="modal-header">
-																<h5 class="modal-title" id="clinical-medicine-label">药品账单</h5>
+																<h5 class="modal-title" id="clinical-measure-label"></h5>
 																<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 																<span aria-hidden="true">&times;</span>
 															</button>
 															</div>
 															<div class="modal-body">
-																<!-- search bar here -->
-																<div class="input-group">
-																	<input type="text" class="form-control" placeholder="搜索药品">
-																	<span class="input-group-addon search-medicine-mark">
-																			<!-- to use the search icon must include font-awesome css -->
+																<div class="search-block">
+																	<!-- for medicine/injection/infusion -->
+																	<!-- search bar here -->
+																	<div class="input-group">
+																		<input type="text" class="form-control" placeholder="搜索药品">
+																		<span class="input-group-addon search-medicine-mark">
 																			<i class="fa fa-search" aria-hidden="true"></i>
 																		</span>
+																	</div>
+																	<hr>
 																</div>
-																<hr>
-																<h4>搜索结果</h4>
-																<br>
-																<!-- search result here -->
-																<table class="table table-bordered table-hover search-result-table">
-																	<thead>
+																<div class="search-result">
+																	<h6>搜索结果</h6>
+																	<br>
+																	<!-- search result here -->
+																	<table class="table table-bordered table-hover search-result-table">
+																		<thead>
+																			<tr>
+																				<th>简称</th>
+																				<th>药品名</th>
+																				<th>单价</th>
+																				<th>库存</th>
+																				<th>规格</th>
+																				<th>操作</th>
+																			</tr>
+																		</thead>
+																		<tbody>
+																			<tr>
+																				<td data-tag="short"></td>
+																				<td data-tag="name"></td>
+																				<td data-tag="price"></td>
+																				<td data-tag="left"></td>
+																				<td data-tag="spec"></td>
+																				<td>
+																					<button class="btn btn-outline-primary btn-sm search-result-choose">选择</button>
+																				</td>
+																			</tr>
+																		</tbody>
+																	</table>
+																	<hr>
+																</div>
+																<div class="medicine-chosen">
+																	<!-- 已选择的药品 -->
+																	<h6>药品选项</h6>
+																	<br>
+																	<table class="table table-bordered chosen-medicine-table1">
+																		<thead>
+																			<tr>
+																				<th>药品名</th>
+																				<th>单价</th>
+																				<th>数量</th>
+																				<th>每日/次</th>
+																				<th>用药/天</th>
+																				<th>操作</th>
+																			</tr>
+																		</thead>
+																		<tbody>
+																			<tr>
+																				<td data-tag="name"></td>
+																				<td data-tag="price"></td>
+																				<td data-tag="quan" contenteditable="true"></td>
+																				<td data-tag="times" contenteditable="true"></td>
+																				<td data-tag="days" contenteditable="true"></td>
+																				<td>
+																					<button class="btn btn-secondary btn-sm chosen-medicine-del">删除</button>
+																				</td>
+																			</tr>
+																		</tbody>
+																	</table>
+																	<hr>
+																</div>
+																<div class="injninf-chosen">
+																	<!-- 已选择的药品 -->
+																	<h6>药品选项</h6>
+																	<br>
+																	<table class="table table-bordered chosen-medicine-table2">
+																		<thead>
+																			<tr>
+																				<th>药品名</th>
+																				<th>单价</th>
+																				<th>数量</th>
+																				<th>操作</th>
+																			</tr>
+																		</thead>
+																		<tbody>
+																			<tr>
+																				<td data-tag="name"></td>
+																				<td data-tag="price"></td>
+																				<td data-tag="quan" contenteditable="true"></td>
+																				<td>
+																					<button class="btn btn-secondary btn-sm chosen-medicine-del">删除</button>
+																				</td>
+																			</tr>
+																		</tbody>
+																	</table>
+																	<hr>
+																</div>
+																<div class="debridement-choose">
+																	<h6>清创选项</h6>
+																	<br>
+																	<table class="table">
 																		<tr>
-																			<th>简称</th>
-																			<th>药品名</th>
-																			<th>单价</th>
-																			<th>库存</th>
-																			<th>规格</th>
-																			<th>操作</th>
-																		</tr>
-																	</thead>
-																	<tbody>
-																		<tr>
-																			<td data-tag="short"></td>
-																			<td data-tag="name"></td>
-																			<td data-tag="price"></td>
-																			<td data-tag="left"></td>
-																			<td data-tag="spec"></td>
 																			<td>
-																				<button class="btn btn-outline-primary btn-sm search-result-choose">选择</button>
+																				<button class="btn btn-outline-primary debridement-toggle active">小清创</button>
+																			</td>
+																			<td>
+																				<button class="btn btn-outline-primary debridement-toggle">中清创</button>
 																			</td>
 																		</tr>
-																	</tbody>
-																</table>
-																<!-- 已选择的药品 -->
-																<h4>药品选项</h4>
-																<br>
-																<table class="table table-bordered chosen-medicine-table">
-																	<thead>
+																	</table>
+																	<hr>
+																	<h6>清创次数</h6>
+																	<table class="table">
 																		<tr>
-																			<th>药品名</th>
-																			<th>单价</th>
-																			<th>数量</th>
-																			<th>每日/次</th>
-																			<th>用药/天</th>
-																			<th>操作</th>
-																		</tr>
-																	</thead>
-																	<tbody>
-																		<tr>
-																			<td data-tag="name"></td>
-																			<td data-tag="price"></td>
-																			<td data-tag="quan" contenteditable="true"></td>
-																			<td data-tag="times" contenteditable="true"></td>
-																			<td data-tag="days" contenteditable="true"></td>
 																			<td>
-																				<button class="btn btn-secondary btn-sm chosen-medicine-del">删除</button>
+																				<input class="form-control debridement-num" type="number" max="10" min="1" value="1">
 																			</td>
 																		</tr>
-																	</tbody>
-																</table>
-																<button class="btn btn-outline-primary chosen-medicine-save">确定并发送</button>
+																	</table>
+																	<hr>
+																</div>
+																<div class="medicine-finish">
+																	<button class="btn btn-outline-primary chosen-medicine-save">确定并发送</button>
+																</div>
 															</div>
 															<div class="modal-footer">
-																<button class="btn btn-primary">确认</button>
+																<button class="btn btn-primary" data-dismiss="modal">关闭</button>
 															</div>
 														</div>
 													</div>

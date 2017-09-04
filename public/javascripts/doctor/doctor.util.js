@@ -6,14 +6,14 @@ doctor.util = (function() {
                 $('<div class="alert alert-success" role="alert"></div>')
                 .text(successMsg)
                 .append('<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>');
-            page.append(tip);
+            page.prepend(tip);
         }
         else if(result == 'fail') {
             var tip =
                 $('<div class="alert alert-warning" role="alert"></div>')
                 .text(failMsg)
                 .append('<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>');
-            page.append(tip);
+            page.prepend(tip);
         }
     };
 

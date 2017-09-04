@@ -146,13 +146,6 @@ div.record-content {
   margin: 1px;
 } */
 
-table.chosen-medicine-table input {
-  width: 35px;
-  outline: none;
-  border: none;
-}
-
-
 /* table.treatment-schedule-table td[contenteditable="true"] {
   width: 50%;
 } */
@@ -162,6 +155,7 @@ table {
 }
 
 button.check-item-choose,
+button.debridement-toggle,
 button.clinical-measure-show {
   width: 100%;
 }

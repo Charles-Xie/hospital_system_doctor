@@ -21,7 +21,11 @@ doctor.patient = (function () {
         addMedicineBillShow(pageId);
         addCheckReportShow(pageId);
         addHistoryDetailShow(pageId);
+        addMedicineChoose(pageId);
+        addDebridementToggle(pageId);
+        addMedicineSearch(pageId);
         // addBasicInfoFinish(pageId);
+        addClinicalModalShow(pageId);
     };
 
     var addPatientPage = function () {
@@ -223,7 +227,6 @@ doctor.patient = (function () {
             var $table = $(pageId).find('table.treatment-schedule-table');
             var rowTemp = $('#patient-').find('table.treatment-schedule-table').children('tbody').children().eq(0).clone(true);
             rowTemp.children('td[data-tag="stage"]').text($table.find('tr').length);
-            // addDeleteListener(rowTemp.find('button.treatment-schedule-del'));
             // get the first row of the template table
             $table.children('tbody').append(rowTemp);
         });
@@ -282,53 +285,58 @@ doctor.patient = (function () {
     };
 
     var addMedicineSearch = function (pageId) {
+        var showMedicineSearchResult = function (info, page) {
+            var modal = page.find('div.clinical-measure-modal');
+            var modalType = modal.data('type');
+            modal.find('div.search-result').show();
+            if (modalType == 'medicine') {
+                console.log("modal type: " + modal.data('type'));
+                modal.find('div.medicine-chosen').show();
+                modal.find('div.injninf-chosen').hide();
+            } else {
+                console.log("modal type: " + modal.data('type'));
+                modal.find('div.medicine-chosen').hide();
+                modal.find('div.injninf-chosen').show();
+            }
+            modal.find('div.medicine-finish').show();
+            doctor.util.addMultiRows(page, 'table.search-result-table', info, '[data-tag]', true);
+        };
         var $button = $(pageId).find('span.search-medicine-mark');
         $button.click(function () {
             console.log("search medicine button clicked");
-            // show hidden content 
-            // $(pageId).find('div.medicine-content').show();
+            // show hidden content
             // get input
-            data = {
+            var page = $(this).parents('[data-patient]');
+            var data = {
                 name: $(this).prev().val()
             };
             // send request and get info
-            var showMedicineSearchResult = function (info) {
-                doctor.util.addMultiRows($(pageId), 'table.search-result-table', info, '[data-tag]');
-                addMedicineChoose(pageId);
-            };
+
             doctor.con.emit(
                 "web-get-drug-info-apply",
                 data,
                 "web-get-drug-info-reply",
-                showMedicineSearchResult);
+                showMedicineSearchResult,
+                page);
         });
         $button.prev().keydown(function () {
             if (event.keyCode == "13") {
                 console.log("enter key pressed");
-                $button.click();
+                $(this).next().click();
             }
         });
     };
 
     var addMedicineChoose = function (pageId) {
-        var $buttons = $(pageId).find('button.search-result-choose');
-        var rowTemp = $('#patient-').find('table.chosen-medicine-table').children('tbody').children().eq(0);
-        var $table = $(pageId).find('table.chosen-medicine-table');
-        for (var i = 0; i < $buttons.length; i++) {
-            addChooseListener($buttons.eq(i), $table, rowTemp);
-        }
-    };
-
-    var addChooseListener = function (button, table, row) {
-        data = {
-            table: table,
-            row: row.clone(true)
-        };
-        button.click(data, function (event) {
-            console.log("doctor.patient medicine choose button clicked");
-            // get info
-            $tds1 = $(this).parent().siblings('[data-tag]');
-            $tds2 = event.data.row.children('td[data-tag]');
+        var $button = $(pageId).find('button.search-result-choose');
+        $button.click(function () {
+            var page = $(this).parents('[data-patient]');
+            var modalType = page.find('div.clinical-measure-modal').data('type');
+            var tableSelector = modalType == 'medicine' ? 'table.chosen-medicine-table1' : 'table.chosen-medicine-table2';
+            var $table = page.find(tableSelector);
+            var rowTemp = $('#patient-').find(tableSelector).children('tbody').children().eq(0).clone(true);
+            var $tds1 = $(this).parent().siblings('[data-tag]');
+            var $tds2 = rowTemp.children('td[data-tag]');
             for (var i = 0; i < $tds2.length; i++) {
                 itemName = $tds2.eq(i).data('tag');
                 td = $tds1.filter('[data-tag="' + itemName + '"]');
@@ -336,7 +344,7 @@ doctor.patient = (function () {
                     $tds2.eq(i).text(td.text());
                 }
             }
-            event.data.table.append(event.data.row);
+            $table.append(rowTemp);
         });
     };
 
@@ -346,45 +354,74 @@ doctor.patient = (function () {
             '.record-history-table',
             '.current-check-table',
             '.search-result-table',
-            '.chosen-medicine-table'
+            '.chosen-medicine-table1',
+            '.chosen-medicine-table2'
         ];
         for (var i = 0; i < tableNames.length; i++) {
             $(pageId).find(tableNames[i]).children('tbody').children('tr').eq(0).remove();
         }
     };
 
-    var addMedicineSave = function (pageId) {
+    var addMeasureSave = function (pageId) {
         var $button = $(pageId).find('button.chosen-medicine-save');
         $button.click(function () {
             console.log("chosen medicine save button clicked");
             var page = $(this).parents('[data-patient]');
             var patientId = page.data('patient');
-            var $table = page.find('table.chosen-medicine-table');
+            var modalType = page.find('div.clinical-measure-modal').data('type');
             var data = {
                 doc_id: doctor.getId(),
                 pat_id: patientId
             };
-            var $trs = $table.children('tbody').children();
-            var chosenData = [];
-            for (var i = 0; i < $trs.length; i++) {
-                var chosenItem = {};
-                var $tds = $trs.eq(i).children('[data-tag]');
-                for (var j = 0; j < $tds.length; j++) {
-                    var itemName = $tds.eq(j).data('tag');
-                    chosenItem[itemName] = $tds.eq(j).text();
+            if (modalType == 'debridement') {
+                var debridementType = page.find('button.debridement-toggle.active').text();
+                var debridementNum = page.find('input.debridement-num').val();
+                data.type = debridementType;
+                data.num = debridementNum;
+            } else {
+                var tableSelector = modalType == 'medicine' ? 'table.chosen-medicine-table1' : 'table.chosen-medicine-table2';
+                var $table = page.find(tableSelector);
+                var $trs = $table.children('tbody').children();
+                var chosenData = [];
+                for (var i = 0; i < $trs.length; i++) {
+                    var chosenItem = {};
+                    var $tds = $trs.eq(i).children('[data-tag]');
+                    for (var j = 0; j < $tds.length; j++) {
+                        var itemName = $tds.eq(j).data('tag');
+                        chosenItem[itemName] = $tds.eq(j).text();
+                    }
+                    chosenData.push(chosenItem);
                 }
-                chosenData.push(chosenItem);
+                data.chosen = chosenData;
+                var alertMeasureSaveResult = function (data, page) {
+                    doctor.util.alertResult(data, page.find('div.medicine-finish'), "操作成功发送", "操作已发送，不能重复操作");
+                };
             }
-            data.chosen = chosenData;
-            var alertMedicineSaveResult = function (data, page) {
-                doctor.util.alertResult(data, page, "药品单成功发送", "药品单已发送，不能重复操作");
+            var sendMeasureRequest = function (applyEvent, replyEvent) {
+                doctor.con.emit(
+                    applyEvent,
+                    data,
+                    replyEvent,
+                    alertMeasureSaveResult,
+                    page);
             };
-            doctor.con.emit(
-                "web-add-prescribe-apply",
-                data,
-                "web-add-prescribe-reply",
-                alertMedicineSaveResult,
-                page);
+            switch (modalType) {
+                case 'medicine':
+                    sendMeasureRequest('web-add-prescribe-apply', 'web-add-prescribe-reply');
+                    break;
+                case 'injection':
+                case 'infusion':
+                    sendMeasureRequest('web-add-injection-infusion-apply', 'web-add-injection-infusion-reply');
+                    break;
+                case 'debridement':
+                    sendMeasureRequest('web-add-debridement-apply', 'web-add-debridement-reply');
+                    break;
+                default:
+                    alertMeasureSaveResult({
+                        result: 'fail'
+                    }, page);
+                    break;
+            }
         });
     };
 
@@ -443,7 +480,7 @@ doctor.patient = (function () {
 
             var showCurrentCheck = function (data, page) {
                 console.log("showCurrentCheck() called");
-                doctor.util.alertResult(data, page, "检查项目成功发送", "检查项目已经发送，不能重复操作");
+                doctor.util.alertResult(data, page.find('button.check-item-send').parent(), "检查项目成功发送", "检查项目已经发送，不能重复操作");
                 data = data.result;
                 if (data instanceof Array) {
                     doctor.util.addMultiRows(
@@ -503,19 +540,64 @@ doctor.patient = (function () {
             var $this = $(this);
             var page = $this.parents('[data-patient]');
             var recordId = $this.parent().siblings('[data-tag="id"]').text();
-            var showHistoryDetail = function(data, page) {
+            var showHistoryDetail = function (data, page) {
                 var treatSche = data.treatSche;
                 var diseaDiag = data.diseaseDiag;
                 console.log("addHIstoryDetailShow() called");
-                if(diseaDiag) {
+                if (diseaDiag) {
                     console.log("addHIstoryDetailShow() add disease diag");
                     doctor.util.addTableItems(page, 'table.modalDiseaDiagTable', diseaDiag, '[data-tag]');
                 }
-                if(treatSche) {
+                if (treatSche) {
                     doctor.util.addMultiRows(page, 'table.modalTreatScheTable', treatSche, '[data-tag]');
                 }
             };
-            doctor.con.emit('web-get-history-patient-info-apply', {id: recordId}, 'web-get-history-patient-info-reply', showHistoryDetail, page);
+            doctor.con.emit('web-get-history-patient-info-apply', {
+                id: recordId
+            }, 'web-get-history-patient-info-reply', showHistoryDetail, page);
+        });
+    };
+
+    // go on with this*****
+    var addClinicalModalShow = function (pageId) {
+        var $buttons = $(pageId).find('button.clinical-measure-show');
+        $buttons.click(function () {
+            var page = $(this).parents('[data-patient]');
+            var modal = page.find('div.clinical-measure-modal');
+            var modalTitle = modal.find('.modal-title');
+            var modalBody = modal.find('div.modal-body');
+            var modalFoot = modal.find('div.modal-footer');
+            modalBody.children().hide(); // hide all content first
+            var measureName = $(this).text();
+            modalTitle.text("添加项目 " + measureName);
+            switch (measureName) {
+                case "用药":
+                    modal.data('type', 'medicine');
+                    // modal.attr('data-type', 'medicine');
+                    modalBody.children('div.search-block').show();
+                    // modalBody.children('div.medicine-finish').show();
+                    break;
+                case "注射":
+                    modal.data('type', 'injection');
+                    // modal.attr('data-type', 'injection');
+                    modalBody.children('div.search-block').show();
+                    // modalBody.children('div.medicine-finish').show();
+                    break;
+                case "输液":
+                    modal.data('type', 'infusion');
+                    // modal.attr('data-type', 'infusion');
+                    modalBody.children('div.search-block').show();
+                    // modalBody.children('div.medicine-finish').show();
+                    break;
+                case "清创":
+                    modal.data('type', 'debridement');
+                    // modal.attr('data-type', 'debridement');
+                    modalBody.children('div.debridement-choose').show();
+                    modalBody.children('div.medicine-finish').show();
+                    break;
+                default:
+                    break;
+            }
         });
     };
 
@@ -525,10 +607,23 @@ doctor.patient = (function () {
         addTreatScheAdd(pageId);
         // addTreatScheDels(pageId);
         addTreatScheSave(pageId);
-        addMedicineSearch(pageId);
-        addMedicineSave(pageId);
+        // addMedicineSearch(pageId);
+        addMeasureSave(pageId);
         // addMedicineDels(pageId);
         // addMedicineBillShow(pageId);
+    };
+
+    var addDebridementToggle = function (pageId) {
+        var page = $(pageId);
+        var $buttons = page.find('button.debridement-toggle');
+        $buttons.click(function () {
+            var $this = $(this);
+            var allBtns = $(this).parents('[data-patient]').find('button.debridement-toggle');
+            if (!$this.hasClass('active')) {
+                allBtns.filter('.active').removeClass('active');
+                $this.addClass('active');
+            }
+        });
     };
 
     return {
