@@ -133,7 +133,7 @@
 												</td>
 											</tr>
 										</table>
-										<!-- <button class="btn btn-outline-primary btn-sm basic-info-finish">完成诊治</button> -->
+										<button class="btn btn-outline-primary btn-sm basic-info-finish">完成诊治</button>
 									</div>
 								</div>
 								<div class="segment-line"></div>
@@ -385,7 +385,6 @@
 													</tbody>
 												</table>
 												<div>
-													<button class="btn btn-outline-success" data-toggle="modal" data-target="#treatment-modal">添加新项</button>
 													<button class="btn btn-outline-primary treatment-schedule-save">保存</button>
 													<button class="btn btn-outline-success treatment-schedule-add">添加新项</button>
 												</div>
@@ -642,7 +641,7 @@
 													<tbody>
 														<tr>
 															<td>
-																<button class="btn btn-outline-primary clinical-measure-show" data-toggle="modal" data-target="#clinical-measure-modal">用药</button>
+																<button class="btn btn-outline-primary clinical-measure-show" data-toggle="modal" data-target="#clinical-measure-modal">药品</button>
 															</td>
 															<td>
 																<button class="btn btn-outline-primary clinical-measure-show" data-toggle="modal" data-target="#clinical-measure-modal">注射</button>
@@ -682,7 +681,6 @@
 																</div>
 																<div class="search-result">
 																	<h6>搜索结果</h6>
-																	<br>
 																	<!-- search result here -->
 																	<table class="table table-bordered table-hover search-result-table">
 																		<thead>
@@ -713,7 +711,6 @@
 																<div class="medicine-chosen">
 																	<!-- 已选择的药品 -->
 																	<h6>药品选项</h6>
-																	<br>
 																	<table class="table table-bordered chosen-medicine-table1">
 																		<thead>
 																			<tr>
@@ -743,7 +740,6 @@
 																<div class="injninf-chosen">
 																	<!-- 已选择的药品 -->
 																	<h6>药品选项</h6>
-																	<br>
 																	<table class="table table-bordered chosen-medicine-table2">
 																		<thead>
 																			<tr>
@@ -768,7 +764,6 @@
 																</div>
 																<div class="debridement-choose">
 																	<h6>清创选项</h6>
-																	<br>
 																	<table class="table">
 																		<tr>
 																			<td>
@@ -781,13 +776,10 @@
 																	</table>
 																	<hr>
 																	<h6>清创次数</h6>
-																	<table class="table">
-																		<tr>
-																			<td>
-																				<input class="form-control debridement-num" type="number" max="10" min="1" value="1">
-																			</td>
-																		</tr>
-																	</table>
+																	<input class="form-control debridement-num" type="number" max="10" min="1" value="1">
+																	<hr>
+																	<h6>注意事项</h6>
+																	<textarea class="form-control debridement-notice"></textarea>
 																	<hr>
 																</div>
 																<div class="medicine-finish">
@@ -808,7 +800,113 @@
 											<div class="col-md-12 col-lg-12">
 												<h4>查看账单</h4>
 												<br>
-												<button class="btn btn-outline-success bill-list-show">点击查看账单</button>
+												<button class="btn btn-outline-success bill-list-show" data-toggle="modal" data-target="#bill-modal">点击查看账单</button>
+												<!-- <button class="btn btn-outline-success medicine-bill-show" data-toggle="modal" data-target="#bill-modal">查看药品账单</button> -->
+
+												<div class="modal fade bill-modal" id="bill-modal" tabindex="-1" role="dialog" aria-labelledby="bill-modal-label" aria-hidden="true">
+													<div class="modal-dialog modal-lg" role="document">
+														<div class="modal-content">
+															<div class="modal-header">
+																<h4 class="modal-title" id="bill-modal-label">医疗账单</h4>
+																<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+																	<span aria-hidden="true">&times;</span>
+																</button>
+															</div>
+															<div class="modal-body">
+																<h5>药品</h5>
+																<table class="table table-bordered table-hover medicine-bill-table">
+																	<thead>
+																		<tr>
+																			<th>药品名</th>
+																			<th>单价</th>
+																			<th>用法用量</th>
+																			<th>数量</th>
+																			<th>总价</th>
+																		</tr>
+																	</thead>
+																	<tbody>
+																		<tr>
+																			<td data-tag="name"></td>
+																			<td data-tag="price"></td>
+																			<td data-tag="use"></td>
+																			<td data-tag="quan"></td>
+																			<td data-tag="total"></td>
+																		</tr>
+																	</tbody>
+																</table>
+																<hr>
+																<h5>注射</h5>
+																<p>操作费用：￥3.00</p>
+																<table class="table table-bordered table-hover injection-bill-table">
+																	<thead>
+																		<tr>
+																			<th>药品名</th>
+																			<th>单价</th>
+																			<th>数量</th>
+																			<th>总价</th>
+																		</tr>
+																	</thead>
+																	<tbody>
+																		<tr>
+																			<td data-tag="name"></td>
+																			<td data-tag="price"></td>
+																			<td data-tag="quan"></td>
+																			<td data-tag="total"></td>
+																		</tr>
+																	</tbody>
+																</table>
+																<hr>
+																<h5>输液</h5>
+																<p>操作费用：￥5.00</p>
+																<table class="table table-bordered table-hover infusion-bill-table">
+																	<thead>
+																		<tr>
+																			<th>药品名</th>
+																			<th>单价</th>
+																			<th>数量</th>
+																			<th>总价</th>
+																		</tr>
+																	</thead>
+																	<tbody>
+																		<tr>
+																			<td data-tag="name"></td>
+																			<td data-tag="price"></td>
+																			<td data-tag="quan"></td>
+																			<td data-tag="total"></td>
+																		</tr>
+																	</tbody>
+																</table>
+																<hr>
+																<h5>清创</h5>
+																<table class="table table-bordered">
+																	<thead>
+																		<tr>
+																			<th>种类</th>
+																			<th>次数</th>
+																			<th>单价</th>
+																			<th>总价</th>
+																		</tr>
+																	</thead>
+																	<tbody>
+																		<tr>
+																			<td data-tag="type"></td>
+																			<td data-tag="num"></td>
+																			<td data-tag="price"></td>
+																			<td data-tag="total"></td>
+																		</tr>
+																	</tbody>
+																</table>
+																<hr>
+
+																<h5>共计：￥<span class="total-price"></span> </h5>
+															</div>
+															<div class="modal-footer">
+																<button class="btn btn-primary">确认</button>
+															</div>
+														</div>
+													</div>
+												</div>
+
 											</div>
 										</div>
 									</div>
@@ -929,8 +1027,8 @@
 															<div class="modal-header">
 																<h5 class="modal-title" id="addnew-modal-label">添加新的日程事项</h5>
 																<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-																						<span aria-hidden="true">&times;</span>
-																					</button>
+																	<span aria-hidden="true">&times;</span>
+																</button>
 															</div>
 															<div class="modal-body">
 																<div class="input-group">

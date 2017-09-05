@@ -180,7 +180,6 @@ doctor.patient = (function () {
         $patientItem.parent().on('click', '[data-id]', function () {
             // condition; this page is not shown currently
             // that is, class != "active"
-            // console.log(this);
             $this = $(this);
             if ($this.data('ver') == undefined) {
                 $this.attr('data-ver', '1');
@@ -355,7 +354,10 @@ doctor.patient = (function () {
             '.current-check-table',
             '.search-result-table',
             '.chosen-medicine-table1',
-            '.chosen-medicine-table2'
+            '.chosen-medicine-table2',
+            '.medicine-bill-table',
+            '.injection-bill-table',
+            '.infusion-bill-table'
         ];
         for (var i = 0; i < tableNames.length; i++) {
             $(pageId).find(tableNames[i]).children('tbody').children('tr').eq(0).remove();
@@ -376,10 +378,19 @@ doctor.patient = (function () {
             if (modalType == 'debridement') {
                 var debridementType = page.find('button.debridement-toggle.active').text();
                 var debridementNum = page.find('input.debridement-num').val();
+                var debridementAdv = page.find('textarea.debridement-notice').val();
                 data.type = debridementType;
                 data.num = debridementNum;
+                data.advice = debridementAdv
             } else {
-                var tableSelector = modalType == 'medicine' ? 'table.chosen-medicine-table1' : 'table.chosen-medicine-table2';
+                // var tableSelector = modalType == 'medicine' ? 'table.chosen-medicine-table1' : 'table.chosen-medicine-table2';
+                if(modalType == 'medicine') {
+                    tableSelector = 'table.chosen-medicine-table1';
+                }
+                else {
+                    tableSelector = 'table.chosen-medicine-table2';
+                    data.type = modalType == 'injection'? '注射': '输液';
+                }
                 var $table = page.find(tableSelector);
                 var $trs = $table.children('tbody').children();
                 var chosenData = [];
@@ -411,7 +422,7 @@ doctor.patient = (function () {
                     break;
                 case 'injection':
                 case 'infusion':
-                    sendMeasureRequest('web-add-injection-infusion-apply', 'web-add-injection-infusion-reply');
+                    sendMeasureRequest('web-add-infusion-injection-apply', 'web-add-infusion-injection-reply');
                     break;
                 case 'debridement':
                     sendMeasureRequest('web-add-debridement-apply', 'web-add-debridement-reply');
@@ -571,7 +582,7 @@ doctor.patient = (function () {
             var measureName = $(this).text();
             modalTitle.text("添加项目 " + measureName);
             switch (measureName) {
-                case "用药":
+                case "药品":
                     modal.data('type', 'medicine');
                     // modal.attr('data-type', 'medicine');
                     modalBody.children('div.search-block').show();
@@ -623,6 +634,33 @@ doctor.patient = (function () {
                 allBtns.filter('.active').removeClass('active');
                 $this.addClass('active');
             }
+        });
+    };
+
+    var addPatientFinish = function (pageId) {
+        var $button = $(pageId).find('button.basic-info-finish');
+        $button.click(function () {
+            var page = $(this).parents('[data-patient]');
+            var patientId = page.data('patient');
+            var data = {
+                doc_id: doctor.getId(),
+                pat_id: patientId
+            };
+            var hidePage = function (data, page) {
+                var result = data.result;
+                if (data.result == 'success') {
+                    var pageId = page.attr('id');
+                    $('[href="' + '#' + pageId + '"]').parent().remove();
+                    page.remove();
+                }
+            };
+            doctor.con.emit(
+                'web-patient-finish-apply',
+                data,
+                'web-patient-finish-reply',
+                hidePage,
+                page
+            )
         });
     };
 
