@@ -5,8 +5,6 @@ doctor.patient = (function () {
 
     // init the patient template
     var init = function (container) {
-        console.log("doctor.patient init");
-
         $container = container;
         initListener1();
     };
@@ -24,7 +22,6 @@ doctor.patient = (function () {
         addMedicineChoose(pageId);
         addDebridementToggle(pageId);
         addMedicineSearch(pageId);
-        // addBasicInfoFinish(pageId);
         addClinicalModalShow(pageId);
     };
 
@@ -384,12 +381,11 @@ doctor.patient = (function () {
                 data.advice = debridementAdv
             } else {
                 // var tableSelector = modalType == 'medicine' ? 'table.chosen-medicine-table1' : 'table.chosen-medicine-table2';
-                if(modalType == 'medicine') {
+                if (modalType == 'medicine') {
                     tableSelector = 'table.chosen-medicine-table1';
-                }
-                else {
+                } else {
                     tableSelector = 'table.chosen-medicine-table2';
-                    data.type = modalType == 'injection'? '注射': '输液';
+                    data.type = modalType == 'injection' ? '注射' : '输液';
                 }
                 var $table = page.find(tableSelector);
                 var $trs = $table.children('tbody').children();
@@ -404,11 +400,15 @@ doctor.patient = (function () {
                     chosenData.push(chosenItem);
                 }
                 data.chosen = chosenData;
-                var alertMeasureSaveResult = function (data, page) {
-                    doctor.util.alertResult(data, page.find('div.medicine-finish'), "操作成功发送", "操作已发送，不能重复操作");
-                };
             }
+
+            var alertMeasureSaveResult = function (data, page) {
+                console.log("alertMeasureSaveResult() called");
+                doctor.util.alertResult(data, page.find('div.medicine-finish'), "操作成功发送", "操作已发送，不能重复操作");
+            };
+
             var sendMeasureRequest = function (applyEvent, replyEvent) {
+                // console.log("sendMeasureRequest() called");
                 doctor.con.emit(
                     applyEvent,
                     data,
@@ -416,6 +416,7 @@ doctor.patient = (function () {
                     alertMeasureSaveResult,
                     page);
             };
+
             switch (modalType) {
                 case 'medicine':
                     sendMeasureRequest('web-add-prescribe-apply', 'web-add-prescribe-reply');
@@ -435,7 +436,6 @@ doctor.patient = (function () {
             }
         });
     };
-
 
     var addMedicineBillShow = function (pageId) {
         var $button = $(pageId).find('button.medicine-bill-show');
@@ -612,18 +612,6 @@ doctor.patient = (function () {
         });
     };
 
-    var initListener2 = function (pageId) {
-        removeTemplates(pageId);
-        // addDiseaDiagSave(pageId);
-        addTreatScheAdd(pageId);
-        // addTreatScheDels(pageId);
-        addTreatScheSave(pageId);
-        // addMedicineSearch(pageId);
-        addMeasureSave(pageId);
-        // addMedicineDels(pageId);
-        // addMedicineBillShow(pageId);
-    };
-
     var addDebridementToggle = function (pageId) {
         var page = $(pageId);
         var $buttons = page.find('button.debridement-toggle');
@@ -662,6 +650,13 @@ doctor.patient = (function () {
                 page
             )
         });
+    };
+
+    var initListener2 = function (pageId) {
+        removeTemplates(pageId);
+        addTreatScheAdd(pageId);
+        addTreatScheSave(pageId);
+        addMeasureSave(pageId);
     };
 
     return {
