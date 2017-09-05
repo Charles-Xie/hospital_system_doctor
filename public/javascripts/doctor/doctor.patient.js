@@ -23,6 +23,8 @@ doctor.patient = (function () {
         addDebridementToggle(pageId);
         addMedicineSearch(pageId);
         addClinicalModalShow(pageId);
+        addPatientFinish(pageId);
+        addMeasureSave(pageId);
     };
 
     var addPatientPage = function () {
@@ -438,34 +440,50 @@ doctor.patient = (function () {
     };
 
     var addMedicineBillShow = function (pageId) {
-        var $button = $(pageId).find('button.medicine-bill-show');
+        var $button = $(pageId).find('button.bill-list-show');
         $button.click(function () {
             // console.log("medicine list show button clicked");
             var page = $(this).parents('[data-patient]');
             var patientId = page.data('patient');
-            var showMedicineBillInfo = function (data, page) {
-                data = data.result;
+            var showBillTableInfo = function (page, item, data) {
+                if (item == 'debridement') {
+                    doctor.util.addTableItems(
+                        page,
+                        'table.debridement-bill-table',
+                        data.debridement[0],
+                        '[data-tag]'
+                    );
+                } else {
+                    doctor.util.addMultiRows(
+                        page,
+                        'table.' + item + '-bill-table',
+                        data[item],
+                        '[data-tag]'
+                    );
+                }
+            };
+            var showBillInfo = function (data, page) {
                 if (data == undefined) {
                     return;
                 }
-                doctor.util.addMultiRows(
-                    page,
-                    'table.medicine-bill-table',
-                    data,
-                    '[data-tag]');
-                var totalPrice = 0;
-                for (var i = 0; i < data.length; i++) {
-                    totalPrice += parseInt(data[i].total);
+                for (var i = 0, items = ['medicine', 'injection', 'infusion', 'debridement']; i < items.length; i++) {
+                    var divSelector = 'div.' + items[i] + '-bill-div';
+                    if (data[items[i]].length == 0) {
+                        page.find(divSelector).hide();
+                    } else {
+                        page.find(divSelector).show();
+                        showBillTableInfo(page, items[i], data);
+                    }
                 }
-                page.find('span.total-price').text(totalPrice);
+                page.find('span.total-price').text(data.total);
             }
             doctor.con.emit(
-                'web-get-prescribe-apply', {
+                'web-get-medical-bill-apply', {
                     doc_id: doctor.getId(),
                     pat_id: patientId
                 },
-                'web-get-prescribe-reply',
-                showMedicineBillInfo,
+                'web-get-medical-bill-reply',
+                showBillInfo,
                 page);
             // count the total price
         });
@@ -656,7 +674,7 @@ doctor.patient = (function () {
         removeTemplates(pageId);
         addTreatScheAdd(pageId);
         addTreatScheSave(pageId);
-        addMeasureSave(pageId);
+        // addMeasureSave(pageId);
     };
 
     return {
