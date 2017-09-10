@@ -405,7 +405,7 @@ doctor.patient = (function () {
             }
 
             var alertMeasureSaveResult = function (data, page) {
-                console.log("alertMeasureSaveResult() called");
+                // console.log("alertMeasureSaveResult() called");
                 doctor.util.alertResult(data, page.find('div.medicine-finish'), "操作成功发送", "操作已发送，不能重复操作");
             };
 
@@ -597,6 +597,7 @@ doctor.patient = (function () {
             var modalBody = modal.find('div.modal-body');
             var modalFoot = modal.find('div.modal-footer');
             modalBody.children().hide(); // hide all content first
+            modalBody.find('div.alert').remove();    //hide the shown alert
             var measureName = $(this).text();
             modalTitle.text("添加项目 " + measureName);
             switch (measureName) {
