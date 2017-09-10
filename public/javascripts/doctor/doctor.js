@@ -4,15 +4,21 @@ var doctor = (function() {
     var $container;
     var init = function(container) {
         $container = container;
-        setId(3);
+        setId();
         doctor.shell.init($container);
         doctor.patient.init($container);
     };
 
     var setId = function(id) {
-        // test only
-        doctorId = id;
-        doctorId = doctorId.toString();
+        if(id == undefined) {
+            doctorId = doctor.cookie.getCookie("doctorid");
+        }
+        else {
+            doctorId = id;
+        }
+        if(typeof doctorId != 'string') {
+            doctorId = doctorId.toString();
+        }
     };
 
     var getId = function() {
