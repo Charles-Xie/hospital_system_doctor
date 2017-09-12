@@ -22,7 +22,7 @@ var doctor = (function() {
     };
 
     var getId = function() {
-        return doctorId;
+        return doctorId.toString();
     };
     
     return {

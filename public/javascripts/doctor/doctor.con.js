@@ -9,6 +9,13 @@ doctor.con = (function () {
         console.log("doctor.con emitToSql() called");
         var replied = false;
         var listener = function (data) {
+            // add this start
+            // verify if message is sent to this doctor
+            if(data.doc_id) {
+                if(data.doc_id.toString() != doctor.getId().toString())
+                    return;
+            }
+            // add this finish
             console.log('[active db] trigger one listener to', waitForEvent);
             replied = true;
             console.log('[active db]', waitForEvent, 'reply received', "data:", data);
