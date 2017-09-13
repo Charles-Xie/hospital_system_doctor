@@ -75,7 +75,7 @@ doctor.patient = (function () {
         var newPatientPage = $patientPage.clone(true).attr('id', 'patient-' + pageNum);
         $patientPage.parent().append(newPatientPage);
         newPatientPage.attr('data-patient', $lastLink.data('patient'));
-        initListener2("#patient-" + countItemNum);
+        initListener2("#patient-" + pageNum);
     };
 
     // _________________________________________________ version 2 start
