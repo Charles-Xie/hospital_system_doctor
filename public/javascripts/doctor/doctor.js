@@ -4,7 +4,7 @@ var doctor = (function() {
     var $container;
     var init = function(container) {
         $container = container;
-        setId(3);
+        setId();
         doctor.shell.init($container);
         doctor.patient.init($container);
     };
