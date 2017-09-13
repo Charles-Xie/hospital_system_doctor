@@ -97,7 +97,7 @@ doctor.shell = (function() {
             var id = $td.siblings('[data-tag="id"]').text();
             var name = $td.siblings('[data-tag="name"]').text();
             // add name and id to patient list
-            addPatient([{id: id, name: name}], ':last');
+            addPatientList([{id: id, name: name}], ':last');
             doctor.patient.addNewPatient();
             // remove this row
             $td.parent().remove();
