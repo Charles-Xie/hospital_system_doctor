@@ -10,6 +10,7 @@ doctor.shell = (function() {
 
         $container.find('#reg-patient-table').children('tbody').children('tr').eq(0).hide();
         addRefBtn(container);
+        addLogoutBtn(container);
     };
 
 // ______________________________________ version 2 start
@@ -120,6 +121,14 @@ doctor.shell = (function() {
         });
     };
 
+    // add logout function
+    var addLogoutBtn = function(container) {
+        $('#logout-btn').click(function() {
+            console.log("call dashboardShell.logout()");
+            console.log("patient logout now");
+            dashboardShell.logout();
+        });
+    };
 
     return {
         init: init

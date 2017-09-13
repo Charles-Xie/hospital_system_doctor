@@ -163,3 +163,9 @@ button.clinical-measure-show {
 hr {
   border: 1px solid #ccc;
 }
+
+h2 {
+  border-bottom: 1px solid #ccc;
+  margin-bottom: 20px;
+  padding-bottom: 10px; 
+}
