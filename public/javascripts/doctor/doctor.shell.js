@@ -17,6 +17,7 @@ doctor.shell = (function() {
     var addRegTable = function(data) {
         console.log("addRegTable() called");
         var tableInfo = (data instanceof Array? data: data.result);
+        console.log("tableInfo: " + tableInfo);
         doctor.util.addMultiRows($container, '#reg-patient-table', tableInfo, '[data-tag]');
         addRegBtns($container);
         updateRegNum();
